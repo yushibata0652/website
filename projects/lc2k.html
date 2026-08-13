@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="LC-2K Toolchain case study — a University of Michigan computer organization project by Yuto Shibata."
+  >
+
+  <title>LC-2K Toolchain | Yuto Shibata</title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="project.css?v=1"
+  >
+</head>
+
+<body class="lc2k-page">
+  <div class="page">
+
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+
+    <header class="nav-wrap">
+      <nav>
+        <a
+          class="crest home-transition"
+          href="../index.html"
+          aria-label="Home"
+        >
+          YS
+        </a>
+
+        <div class="case-label">
+          PROJECT CASE STUDY / LC-2K TOOLCHAIN
+        </div>
+
+        <a
+          class="back-link home-transition"
+          href="../index.html#projects"
+        >
+          ← Back to projects
+        </a>
+      </nav>
+    </header>
+
+
+    <main>
+
+      <!-- ===================================================
+           HERO
+           =================================================== -->
+
+      <section class="hero">
+        <div class="reveal-left">
+          <div class="kicker">
+            UNIVERSITY OF MICHIGAN · COMPUTER ORGANIZATION COURSE PROJECT
+          </div>
+
+          <h1>
+            LC-2K
+            <span>TOOLCHAIN.</span>
+          </h1>
+
+          <p class="hero-copy">
+            A systems project sequence in C that built an
+            assembler, linker, and simulator for the LC-2K
+            instruction set, connecting source-level programs
+            to executable machine state.
+          </p>
+
+          <div class="meta">
+            <span>C</span>
+            <span>Assembler</span>
+            <span>Linker</span>
+            <span>Simulator</span>
+            <span>Relocation</span>
+          </div>
+        </div>
+
+
+        <div class="project-visual reveal-right">
+          <div class="visual-card terminal">
+            <div class="terminal-top">
+              LC-2K / TOOLCHAIN
+            </div>
+
+            <div class="terminal-body">
+              <div>
+                <span class="prompt">$</span>
+                assemble program.as
+              </div>
+
+              <div class="dim">
+                resolving labels...
+              </div>
+
+              <div class="ok">
+                object file created ✓
+              </div>
+
+              <br>
+
+              <div>
+                <span class="prompt">$</span>
+                link a.obj b.obj
+              </div>
+
+              <div class="dim">
+                relocating symbols...
+              </div>
+
+              <div class="ok">
+                executable created ✓
+              </div>
+
+              <br>
+
+              <div>
+                <span class="prompt">$</span>
+                simulate machine.mc
+              </div>
+
+              <div class="dim">
+                PC / registers / memory
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           01 / ASSIGNMENT
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">01 / CONTEXT</div>
+
+          <h2>
+            THE <em>ASSIGNMENT.</em>
+          </h2>
+        </div>
+
+        <p class="prose reveal">
+          This was a University of Michigan computer
+          organization project sequence built around the
+          educational LC-2K instruction set. Across multiple
+          assignments, I implemented the software tools needed
+          to translate, combine, and execute machine-code
+          programs.
+        </p>
+
+        <div class="context reveal-scale">
+          <b>What the project tested</b>
+
+          <p>
+            Low-level programming in C, instruction encoding,
+            symbol resolution, relocation, object-file
+            structure, memory layout, and understanding how
+            source code becomes executable machine state.
+          </p>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           02 / TOOLCHAIN
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">02 / TOOLCHAIN</div>
+
+          <h2>
+            THREE TOOLS, <em>ONE FLOW.</em>
+          </h2>
+        </div>
+
+        <div class="flow">
+          <div class="flow-box reveal-left">
+            <b>Assembler</b>
+
+            <span>
+              Reads LC-2K assembly, resolves labels, validates
+              instructions, and emits machine code or object
+              data.
+            </span>
+          </div>
+
+          <div class="arrow">→</div>
+
+          <div class="flow-box reveal">
+            <b>Linker</b>
+
+            <span>
+              Combines object files, resolves global symbols,
+              performs relocation, and builds one final memory
+              image.
+            </span>
+          </div>
+
+          <div class="arrow">→</div>
+
+          <div class="flow-box reveal-right">
+            <b>Simulator</b>
+
+            <span>
+              Executes machine code instruction by instruction
+              while updating registers, memory, and program
+              state.
+            </span>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           03 / MY WORK
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">03 / MY WORK</div>
+
+          <h2>
+            WHAT I <em>IMPLEMENTED.</em>
+          </h2>
+        </div>
+
+        <div class="grid-4">
+          <article class="card reveal-scale">
+            <span>ASSEMBLY</span>
+
+            <h3>Instruction Encoding</h3>
+
+            <p>
+              Parsed opcodes and arguments, converted assembly
+              instructions into machine representations, and
+              handled signed immediate values.
+            </p>
+          </article>
+
+          <article class="card reveal-scale">
+            <span>SYMBOLS</span>
+
+            <h3>Label Resolution</h3>
+
+            <p>
+              Built symbol handling so labels could be
+              translated into correct addresses and branch
+              offsets.
+            </p>
+          </article>
+
+          <article class="card reveal-scale">
+            <span>LINKING</span>
+
+            <h3>Relocation</h3>
+
+            <p>
+              Adjusted references when text and data sections
+              from multiple object files were combined into a
+              final executable layout.
+            </p>
+          </article>
+
+          <article class="card reveal-scale">
+            <span>EXECUTION</span>
+
+            <h3>Machine State</h3>
+
+            <p>
+              Simulated instruction execution by updating the
+              program counter, registers, memory, and control
+              flow.
+            </p>
+          </article>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           04 / SYSTEMS CONCEPTS
+           =================================================== -->
+
+      <section class="section light">
+        <div class="inner">
+          <div class="heading reveal">
+            <div class="idx">04 / SYSTEMS CONCEPTS</div>
+
+            <h2>
+              WHAT IT MADE <em>CONCRETE.</em>
+            </h2>
+          </div>
+
+          <div class="grid-3">
+            <article class="card reveal-scale">
+              <span>SYMBOL TABLES</span>
+
+              <h3>Names become addresses.</h3>
+
+              <p>
+                Labels are convenient for programmers, but
+                executable code ultimately needs numeric
+                addresses and offsets.
+              </p>
+            </article>
+
+            <article class="card reveal-scale">
+              <span>RELOCATION</span>
+
+              <h3>Addresses depend on placement.</h3>
+
+              <p>
+                When object files move during linking,
+                references must be patched so instructions
+                still point to the correct code and data.
+              </p>
+            </article>
+
+            <article class="card reveal-scale">
+              <span>MACHINE STATE</span>
+
+              <h3>Instructions change state.</h3>
+
+              <p>
+                The simulator made execution tangible by
+                showing how each instruction changes
+                registers, memory, and the program counter.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           05 / CHALLENGES
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">05 / CHALLENGES</div>
+
+          <h2>
+            WHAT MADE IT <em>HARD.</em>
+          </h2>
+        </div>
+
+        <div class="grid-2">
+          <article class="card reveal-left">
+            <span>EDGE CASES</span>
+
+            <h3>
+              Small address mistakes break everything.
+            </h3>
+
+            <p>
+              Off-by-one errors, incorrect branch offsets,
+              sign-extension mistakes, or mishandled
+              relocation can produce output that looks almost
+              correct while failing on specific programs.
+            </p>
+          </article>
+
+          <article class="card reveal-right">
+            <span>DEBUGGING</span>
+
+            <h3>
+              Errors can propagate across tools.
+            </h3>
+
+            <p>
+              A bug in assembly or linking can appear later as
+              a simulator failure, so debugging required
+              tracing symbols, addresses, and machine state
+              across several layers.
+            </p>
+          </article>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           06 / RESULT
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">06 / RESULT</div>
+
+          <h2>
+            WHAT I <em>DELIVERED.</em>
+          </h2>
+        </div>
+
+        <div class="result-grid">
+          <div class="metric reveal-scale">
+            <strong>3×</strong>
+
+            <span>
+              Core systems tools implemented in C: assembler,
+              linker, and simulator.
+            </span>
+          </div>
+
+          <div class="metric reveal-scale">
+            <strong>C</strong>
+
+            <span>
+              Low-level implementation requiring explicit
+              parsing, address reasoning, and machine-state
+              management.
+            </span>
+          </div>
+
+          <div class="metric reveal-scale">
+            <strong>LC-2K</strong>
+
+            <span>
+              End-to-end path from assembly source to linked
+              executable to simulated execution.
+            </span>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           07 / TAKEAWAYS
+           =================================================== -->
+
+      <section class="section takeaway">
+        <div class="inner">
+          <div class="heading reveal">
+            <div class="idx">07 / POST-MATCH</div>
+
+            <h2>
+              WHAT I <em>LEARNED.</em>
+            </h2>
+          </div>
+
+          <div class="grid-3">
+            <article class="card reveal-scale">
+              <span>ABSTRACTION</span>
+
+              <h3>High-level code rests on layers.</h3>
+
+              <p>
+                The boundary between source code, object
+                files, machine code, and processor state
+                became much more concrete.
+              </p>
+            </article>
+
+            <article class="card reveal-scale">
+              <span>DEBUGGING</span>
+
+              <h3>Systems bugs demand precise tracing.</h3>
+
+              <p>
+                Instead of guessing, I learned to follow
+                addresses, symbols, and state transitions
+                until the incorrect assumption surfaced.
+              </p>
+            </article>
+
+            <article class="card reveal-scale">
+              <span>FOUNDATION</span>
+
+              <h3>It changed how I see software.</h3>
+
+              <p>
+                Understanding translation and execution at
+                this level made later systems and backend
+                concepts easier to reason about.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           BACK TO PROJECTS
+           =================================================== -->
+
+      <section class="next">
+        <p>BACK TO THE PLAYBOOK</p>
+
+        <h2>
+          SEE THE REST OF MY PROJECTS.
+        </h2>
+
+        <a
+          class="home-transition"
+          href="../index.html#projects"
+        >
+          Project Playbook
+          <span>↗</span>
+        </a>
+      </section>
+    </main>
+
+
+    <footer>
+      <span>© 2026 YUTO SHIBATA</span>
+      <span>LC-2K TOOLCHAIN CASE STUDY</span>
+
+      <a
+        class="home-transition"
+        href="../index.html"
+      >
+        HOME ↗
+      </a>
+    </footer>
+  </div>
+
+
+  <div
+    id="transition-ball"
+    class="transition-ball"
+    aria-hidden="true"
+  >
+    ⚽
+  </div>
+
+
+  <script src="project.js?v=1"></script>
+</body>
+</html>

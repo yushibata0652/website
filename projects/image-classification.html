@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Image Classification case study — a University of Michigan machine learning project by Yuto Shibata."
+  >
+
+  <title>Image Classification | Yuto Shibata</title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="project.css?v=1"
+  >
+</head>
+
+<body class="image-page">
+  <div class="page">
+
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+
+    <header class="nav-wrap">
+      <nav>
+        <a
+          class="crest home-transition"
+          href="../index.html"
+          aria-label="Home"
+        >
+          YS
+        </a>
+
+        <div class="case-label">
+          PROJECT CASE STUDY / IMAGE CLASSIFICATION
+        </div>
+
+        <a
+          class="back-link home-transition"
+          href="../index.html#projects"
+        >
+          ← Back to projects
+        </a>
+      </nav>
+    </header>
+
+
+    <main>
+
+      <!-- ===================================================
+           HERO
+           =================================================== -->
+
+      <section class="hero">
+        <div class="reveal-left">
+          <div class="kicker">
+            UNIVERSITY OF MICHIGAN · MACHINE LEARNING COURSE PROJECT
+          </div>
+
+          <h1>
+            IMAGE
+            <span>CLASSIFICATION.</span>
+          </h1>
+
+          <p class="hero-copy">
+            A deep-learning image classification project
+            comparing convolutional neural networks and
+            Vision Transformers on more than 8,800 dog-breed
+            images.
+          </p>
+
+          <div class="meta">
+            <span>PyTorch</span>
+            <span>CNN</span>
+            <span>Vision Transformer</span>
+            <span>GPU Training</span>
+            <span>Transfer Learning</span>
+          </div>
+        </div>
+
+
+        <div class="project-visual reveal-right">
+          <div class="visual-card">
+            <div class="mini">
+              MODEL COMPARISON / VALIDATION
+            </div>
+
+            <h3>
+              CNN vs. Vision Transformer
+            </h3>
+
+            <p>
+              I compared two different approaches to visual
+              representation learning rather than training a
+              single model and stopping at one result.
+            </p>
+
+            <div class="model-comparison">
+              <div class="model-row">
+                <b>CNN</b>
+
+                <div class="model-bar">
+                  <span></span>
+                </div>
+
+                <em>96.7%</em>
+              </div>
+
+              <div class="model-row">
+                <b>ViT</b>
+
+                <div class="model-bar">
+                  <span></span>
+                </div>
+
+                <em>70%</em>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           01 / ASSIGNMENT
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">01 / CONTEXT</div>
+
+          <h2>
+            THE <em>ASSIGNMENT.</em>
+          </h2>
+        </div>
+
+        <p class="prose reveal">
+          This was a University of Michigan machine learning
+          course project focused on image classification.
+          The assignment required building, training, and
+          evaluating deep-learning models on a dog-breed
+          dataset containing more than 8,800 images.
+        </p>
+
+        <div class="context reveal-scale">
+          <b>What the project tested</b>
+
+          <p>
+            Image preprocessing, GPU-based training, transfer
+            learning, convolutional neural networks, Vision
+            Transformers, validation strategy, and model
+            comparison using more than one evaluation metric.
+          </p>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           02 / PIPELINE
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">02 / PIPELINE</div>
+
+          <h2>
+            FROM IMAGES TO <em>PREDICTIONS.</em>
+          </h2>
+        </div>
+
+        <div class="flow">
+          <div class="flow-box reveal-left">
+            <b>Image Dataset</b>
+
+            <span>
+              Dog-breed images enter a preprocessing and
+              transformation pipeline before training.
+            </span>
+          </div>
+
+          <div class="arrow">→</div>
+
+          <div class="flow-box reveal">
+            <b>CNN / ViT</b>
+
+            <span>
+              Two different model families learn visual
+              representations from the processed images.
+            </span>
+          </div>
+
+          <div class="arrow">→</div>
+
+          <div class="flow-box reveal-right">
+            <b>Evaluation</b>
+
+            <span>
+              Validation and test performance are compared
+              using accuracy and AUROC.
+            </span>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           03 / MY WORK
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">03 / MY WORK</div>
+
+          <h2>
+            WHAT I <em>IMPLEMENTED.</em>
+          </h2>
+        </div>
+
+        <div class="grid-4">
+          <article class="card reveal-scale">
+            <span>DATA</span>
+
+            <h3>Image Pipeline</h3>
+
+            <p>
+              Prepared image inputs and transformations so
+              the data could be consistently fed into the
+              training and evaluation pipeline.
+            </p>
+          </article>
+
+          <article class="card reveal-scale">
+            <span>CNN</span>
+
+            <h3>Convolutional Model</h3>
+
+            <p>
+              Built and fine-tuned a CNN in PyTorch using GPU
+              acceleration and transfer learning.
+            </p>
+          </article>
+
+          <article class="card reveal-scale">
+            <span>TRANSFORMER</span>
+
+            <h3>Vision Transformer</h3>
+
+            <p>
+              Fine-tuned a transformer-based vision model that
+              represents images as patches and uses attention
+              across those patches.
+            </p>
+          </article>
+
+          <article class="card reveal-scale">
+            <span>EVALUATION</span>
+
+            <h3>Model Comparison</h3>
+
+            <p>
+              Compared validation and test behavior rather
+              than relying on training performance alone.
+            </p>
+          </article>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           04 / ARCHITECTURE
+           =================================================== -->
+
+      <section class="section light">
+        <div class="inner">
+          <div class="heading reveal">
+            <div class="idx">04 / ARCHITECTURE</div>
+
+            <h2>
+              CNN VS. <em>VIT.</em>
+            </h2>
+          </div>
+
+          <div class="grid-2">
+            <article class="card reveal-left">
+              <span>CONVOLUTIONAL NEURAL NETWORK</span>
+
+              <h3>
+                Strong local visual structure.
+              </h3>
+
+              <p>
+                CNNs use convolutional filters to learn local
+                spatial patterns such as edges, textures, and
+                progressively higher-level visual features.
+                Their architecture gives them a useful
+                inductive bias for images.
+              </p>
+            </article>
+
+            <article class="card reveal-right">
+              <span>VISION TRANSFORMER</span>
+
+              <h3>
+                Attention across image patches.
+              </h3>
+
+              <p>
+                A Vision Transformer breaks an image into
+                patches and uses self-attention to model
+                relationships across those patches. The
+                comparison showed that architecture choice
+                and available data can strongly affect
+                performance.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           05 / RESULTS
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">05 / RESULTS</div>
+
+          <h2>
+            WHAT THE MODELS <em>SHOWED.</em>
+          </h2>
+        </div>
+
+        <div class="result-grid">
+          <div class="metric reveal-scale">
+            <strong>8.8K+</strong>
+
+            <span>
+              Dog-breed images used across the project
+              dataset.
+            </span>
+          </div>
+
+          <div class="metric reveal-scale">
+            <strong>96.7%</strong>
+
+            <span>
+              Peak validation accuracy for the strongest
+              target CNN run.
+            </span>
+          </div>
+
+          <div class="metric reveal-scale">
+            <strong>≈0.998</strong>
+
+            <span>
+              AUROC for the strongest target CNN evaluation.
+            </span>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           06 / CHALLENGES
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">06 / CHALLENGES</div>
+
+          <h2>
+            WHAT REQUIRED <em>JUDGMENT.</em>
+          </h2>
+        </div>
+
+        <div class="grid-2">
+          <article class="card reveal-left">
+            <span>GENERALIZATION</span>
+
+            <h3>
+              Training performance is not the goal.
+            </h3>
+
+            <p>
+              I had to watch validation behavior and compare
+              model performance outside the training set to
+              understand whether the model was actually
+              generalizing.
+            </p>
+          </article>
+
+          <article class="card reveal-right">
+            <span>MODEL CHOICE</span>
+
+            <h3>
+              More complex is not automatically better.
+            </h3>
+
+            <p>
+              The CNN and ViT behaved differently on the same
+              task, reinforcing that model architecture should
+              be chosen with the dataset and problem in mind.
+            </p>
+          </article>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           07 / TAKEAWAYS
+           =================================================== -->
+
+      <section class="section takeaway">
+        <div class="inner">
+          <div class="heading reveal">
+            <div class="idx">07 / POST-MATCH</div>
+
+            <h2>
+              WHAT I <em>LEARNED.</em>
+            </h2>
+          </div>
+
+          <div class="grid-3">
+            <article class="card reveal-scale">
+              <span>ARCHITECTURE</span>
+
+              <h3>Match the model to the data.</h3>
+
+              <p>
+                Model families encode different assumptions
+                about how useful structure should be learned.
+              </p>
+            </article>
+
+            <article class="card reveal-scale">
+              <span>METRICS</span>
+
+              <h3>One number is rarely enough.</h3>
+
+              <p>
+                Accuracy and AUROC provide different views of
+                model behavior, especially when evaluating
+                classification systems.
+              </p>
+            </article>
+
+            <article class="card reveal-scale">
+              <span>PIPELINE</span>
+
+              <h3>Training is only one stage.</h3>
+
+              <p>
+                Preprocessing, validation, evaluation, and
+                comparison are just as important as defining
+                the neural network itself.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           BACK TO PROJECTS
+           =================================================== -->
+
+      <section class="next">
+        <p>BACK TO THE PLAYBOOK</p>
+
+        <h2>
+          SEE THE REST OF MY PROJECTS.
+        </h2>
+
+        <a
+          class="home-transition"
+          href="../index.html#projects"
+        >
+          Project Playbook
+          <span>↗</span>
+        </a>
+      </section>
+    </main>
+
+
+    <footer>
+      <span>© 2026 YUTO SHIBATA</span>
+      <span>IMAGE CLASSIFICATION CASE STUDY</span>
+
+      <a
+        class="home-transition"
+        href="../index.html"
+      >
+        HOME ↗
+      </a>
+    </footer>
+  </div>
+
+
+  <div
+    id="transition-ball"
+    class="transition-ball"
+    aria-hidden="true"
+  >
+    ⚽
+  </div>
+
+
+  <script src="project.js?v=1"></script>
+</body>
+</html>

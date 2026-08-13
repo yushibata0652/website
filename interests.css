@@ -1,0 +1,40 @@
+.interests { background: var(--cream); }
+.interest-controls { display: flex; gap: 10px; margin: -30px 0 28px 130px; }
+.interest-btn { border: 1px solid #9ca29d; background: transparent; color: var(--ink); padding: 11px 18px; border-radius: 30px; font: 700 12px "DM Sans"; cursor: pointer; transition: .2s; }
+.interest-btn:hover, .interest-btn.active { background: var(--navy); border-color: var(--navy); color: white; }
+.interest-stage { min-height: 310px; background: var(--green); color: white; padding: 45px; display: grid; grid-template-columns: 180px 1fr; align-items: center; }
+.interest-number { font: 900 145px/.8 "Barlow Condensed"; color: var(--maize); opacity: .85; }
+.interest-label { font: 700 10px "Barlow Condensed"; letter-spacing: .16em; color: #c5d4cf; }
+.interest-stage h3 { font: 800 50px "Barlow Condensed"; margin: 10px 0; }
+.interest-copy { max-width: 650px; color: #d2dfda; line-height: 1.75; font-size: 14px; }
+.interest-stage.switching { animation: switchInterest .28s ease; }
+@keyframes switchInterest { 50% { opacity: .35; transform: translateY(5px); } }
+@media (max-width: 850px) {
+  .interest-controls { margin: 0 0 22px; flex-wrap: wrap; }
+  .interest-stage { grid-template-columns: 1fr; padding: 32px; }
+  .interest-number { font-size: 85px; margin-bottom: 25px; }
+}
+.club-mark { width: 66px; height: 50px; border-radius: 7px; overflow: hidden; background: white !important; border: 1px solid #d4d7d4; }
+.club-mark img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.jersey { position: relative; width: 62px; height: 58px; display: grid; place-items: center; color: #bc002d; background: linear-gradient(90deg, #f4f4f2 0 24%, #fff 24% 76%, #f4f4f2 76%); clip-path: polygon(18% 0, 35% 9%, 65% 9%, 82% 0, 100% 20%, 85% 39%, 77% 31%, 77% 100%, 23% 100%, 23% 31%, 15% 39%, 0 20%); filter: drop-shadow(0 4px 4px #071b3325); }
+.jersey::before { content: ""; position: absolute; width: 18px; height: 9px; top: 5px; border-radius: 0 0 12px 12px; background: var(--cream); border: 3px solid #bc002d; border-top: 0; }
+.jersey::after { content: ""; position: absolute; inset: 20px 16px 7px; border-radius: 50%; background: #bc002d; opacity: .1; }
+.jersey span { position: relative; z-index: 1; margin-top: 9px; font: 900 24px "Barlow Condensed"; }
+.resume-section { background: #e8e4d8; padding: 20px 7vw 120px; }
+.resume-card { position: relative; overflow: hidden; min-height: 390px; background: var(--maize); color: var(--navy); padding: 55px; display: grid; grid-template-columns: 150px 1fr 260px; gap: 30px; align-items: center; }
+.resume-card::after { content: "10"; position: absolute; right: 28%; bottom: -95px; font: 900 330px/.8 "Barlow Condensed"; opacity: .06; }
+.resume-kicker { align-self: start; font: 800 10px "Barlow Condensed"; letter-spacing: .17em; }
+.resume-copy, .resume-actions { position: relative; z-index: 1; }
+.resume-copy > p { font: 800 11px "Barlow Condensed"; letter-spacing: .14em; }
+.resume-copy h2 { font: 900 76px/.78 "Barlow Condensed"; letter-spacing: -.03em; margin: 18px 0 24px; text-transform: uppercase; }
+.resume-copy span { display: block; max-width: 460px; font-size: 14px; line-height: 1.7; }
+.resume-actions { display: flex; flex-direction: column; align-items: stretch; gap: 12px; }
+.resume-actions a { padding: 17px 18px; text-decoration: none; font-size: 13px; font-weight: 800; }
+.resume-primary { display: flex; justify-content: space-between; background: var(--navy); color: white; }
+.resume-download { color: var(--navy); border: 1px solid #071b3366; text-align: center; }
+@media (max-width: 850px) {
+  .resume-section { padding: 10px 6vw 85px; }
+  .resume-card { grid-template-columns: 1fr; padding: 35px; }
+  .resume-copy h2 { font-size: 58px; }
+  .resume-actions { max-width: 320px; }
+}

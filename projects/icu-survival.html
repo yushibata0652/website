@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="ICU Survival Prediction case study — a University of Michigan machine learning project by Yuto Shibata."
+  >
+
+  <title>ICU Survival Prediction | Yuto Shibata</title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="project.css?v=1"
+  >
+</head>
+
+<body class="icu-page">
+  <div class="page">
+
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+
+    <header class="nav-wrap">
+      <nav>
+        <a
+          class="crest home-transition"
+          href="../index.html"
+          aria-label="Home"
+        >
+          YS
+        </a>
+
+        <div class="case-label">
+          PROJECT CASE STUDY / ICU SURVIVAL PREDICTION
+        </div>
+
+        <a
+          class="back-link home-transition"
+          href="../index.html#projects"
+        >
+          ← Back to projects
+        </a>
+      </nav>
+    </header>
+
+
+    <main>
+
+      <!-- ===================================================
+           HERO
+           =================================================== -->
+
+      <section class="hero">
+        <div class="reveal-left">
+          <div class="kicker">
+            UNIVERSITY OF MICHIGAN · MACHINE LEARNING COURSE PROJECT
+          </div>
+
+          <h1>
+            ICU
+            <span>SURVIVAL.</span>
+          </h1>
+
+          <p class="hero-copy">
+            Predicting patient mortality from more than
+            12,000 time-series health records using feature
+            engineering, logistic regression, kernel methods,
+            and cross-validation.
+          </p>
+
+          <div class="meta">
+            <span>Python</span>
+            <span>Logistic Regression</span>
+            <span>Kernel Ridge</span>
+            <span>Feature Engineering</span>
+            <span>Cross-Validation</span>
+          </div>
+        </div>
+
+
+        <div class="project-visual reveal-right">
+          <div class="visual-card">
+            <div class="mini">
+              TIME-SERIES HEALTH DATA
+            </div>
+
+            <h3>
+              Raw measurements → usable features
+            </h3>
+
+            <p>
+              A major part of the project was transforming
+              irregular clinical measurements into a
+              consistent representation that machine-learning
+              models could use.
+            </p>
+
+            <div class="signal">
+              <div class="signal-line"></div>
+            </div>
+
+            <div class="signal-points">
+              <span>CLEAN</span>
+              <span>ENGINEER</span>
+              <span>PREDICT</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           01 / ASSIGNMENT
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">01 / CONTEXT</div>
+
+          <h2>
+            THE <em>ASSIGNMENT.</em>
+          </h2>
+        </div>
+
+        <p class="prose reveal">
+          This was a University of Michigan machine learning
+          course project focused on predicting ICU patient
+          mortality from more than 12,000 time-series health
+          records. The modeling problem started with messy,
+          repeated clinical measurements rather than a clean
+          table of ready-to-use features.
+        </p>
+
+        <div class="context reveal-scale">
+          <b>What the project tested</b>
+
+          <p>
+            Data cleaning, feature engineering, linear and
+            nonlinear prediction methods, model selection,
+            and cross-validation on real-world-style
+            time-series health data.
+          </p>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           02 / PIPELINE
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">02 / PIPELINE</div>
+
+          <h2>
+            FROM RECORDS TO <em>PREDICTION.</em>
+          </h2>
+        </div>
+
+        <div class="flow">
+          <div class="flow-box reveal-left">
+            <b>12,000+ ICU Records</b>
+
+            <span>
+              Time-series measurements contain missing,
+              repeated, and unevenly sampled clinical values.
+            </span>
+          </div>
+
+          <div class="arrow">→</div>
+
+          <div class="flow-box reveal">
+            <b>Feature Engineering</b>
+
+            <span>
+              Clean and summarize patient measurements into a
+              consistent feature representation.
+            </span>
+          </div>
+
+          <div class="arrow">→</div>
+
+          <div class="flow-box reveal-right">
+            <b>Model + Validate</b>
+
+            <span>
+              Train logistic-regression and kernel-based
+              models, then compare them through
+              cross-validation.
+            </span>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           03 / MY WORK
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">03 / MY WORK</div>
+
+          <h2>
+            WHAT I <em>IMPLEMENTED.</em>
+          </h2>
+        </div>
+
+        <div class="grid-4">
+          <article class="card reveal-scale">
+            <span>PREPROCESSING</span>
+
+            <h3>Data Cleaning</h3>
+
+            <p>
+              Processed clinical records into a form that
+              could be used reliably by the downstream
+              machine-learning pipeline.
+            </p>
+          </article>
+
+          <article class="card reveal-scale">
+            <span>FEATURES</span>
+
+            <h3>Feature Engineering</h3>
+
+            <p>
+              Converted time-series patient measurements into
+              structured features representing useful
+              information about each patient.
+            </p>
+          </article>
+
+          <article class="card reveal-scale">
+            <span>LINEAR MODEL</span>
+
+            <h3>Logistic Regression</h3>
+
+            <p>
+              Used logistic regression as an interpretable
+              classification baseline for mortality
+              prediction.
+            </p>
+          </article>
+
+          <article class="card reveal-scale">
+            <span>NONLINEAR MODEL</span>
+
+            <h3>Kernel Ridge</h3>
+
+            <p>
+              Evaluated a kernel-based method capable of
+              representing nonlinear relationships through
+              similarity between examples.
+            </p>
+          </article>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           04 / MODEL COMPARISON
+           =================================================== -->
+
+      <section class="section light">
+        <div class="inner">
+          <div class="heading reveal">
+            <div class="idx">04 / MODEL CHOICE</div>
+
+            <h2>
+              LINEAR VS. <em>NONLINEAR.</em>
+            </h2>
+          </div>
+
+          <div class="grid-2">
+            <article class="card reveal-left">
+              <span>LOGISTIC REGRESSION</span>
+
+              <h3>
+                A strong, interpretable baseline.
+              </h3>
+
+              <p>
+                Logistic regression models the relationship
+                between engineered features and the
+                probability of mortality using a relatively
+                simple decision boundary.
+              </p>
+            </article>
+
+            <article class="card reveal-right">
+              <span>KERNEL METHOD</span>
+
+              <h3>
+                More flexible relationships.
+              </h3>
+
+              <p>
+                Kernel methods can capture nonlinear patterns
+                without explicitly constructing a large set
+                of transformed features, but extra flexibility
+                does not automatically mean better
+                generalization.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           05 / CHALLENGES
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">05 / CHALLENGES</div>
+
+          <h2>
+            WHERE THE WORK <em>REALLY WAS.</em>
+          </h2>
+        </div>
+
+        <div class="grid-2">
+          <article class="card reveal-left">
+            <span>MESSY DATA</span>
+
+            <h3>
+              Patients are not measured uniformly.
+            </h3>
+
+            <p>
+              Real clinical-style records contain missing and
+              uneven measurements, so preprocessing decisions
+              directly affect the information available to
+              the model.
+            </p>
+          </article>
+
+          <article class="card reveal-right">
+            <span>GENERALIZATION</span>
+
+            <h3>
+              Flexible models need validation.
+            </h3>
+
+            <p>
+              Cross-validation was essential for comparing
+              model choices without simply selecting the
+              model that fit one training split best.
+            </p>
+          </article>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           06 / RESULT
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">06 / RESULT</div>
+
+          <h2>
+            WHAT I <em>DELIVERED.</em>
+          </h2>
+        </div>
+
+        <div class="result-grid">
+          <div class="metric reveal-scale">
+            <strong>12K+</strong>
+
+            <span>
+              Time-series ICU patient records processed for
+              the prediction task.
+            </span>
+          </div>
+
+          <div class="metric reveal-scale">
+            <strong>2</strong>
+
+            <span>
+              Primary model families compared: logistic
+              regression and a kernel-based method.
+            </span>
+          </div>
+
+          <div class="metric reveal-scale">
+            <strong>CV</strong>
+
+            <span>
+              Cross-validation used to compare model and
+              hyperparameter choices more reliably.
+            </span>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           07 / TAKEAWAYS
+           =================================================== -->
+
+      <section class="section takeaway">
+        <div class="inner">
+          <div class="heading reveal">
+            <div class="idx">07 / POST-MATCH</div>
+
+            <h2>
+              WHAT I <em>LEARNED.</em>
+            </h2>
+          </div>
+
+          <div class="grid-3">
+            <article class="card reveal-scale">
+              <span>PREPROCESSING</span>
+
+              <h3>Data work is model work.</h3>
+
+              <p>
+                The quality of the engineered representation
+                can matter just as much as the classifier
+                chosen afterward.
+              </p>
+            </article>
+
+            <article class="card reveal-scale">
+              <span>COMPLEXITY</span>
+
+              <h3>Flexible is not automatically better.</h3>
+
+              <p>
+                A more expressive method only helps when it
+                captures useful structure that generalizes.
+              </p>
+            </article>
+
+            <article class="card reveal-scale">
+              <span>VALIDATION</span>
+
+              <h3>Evaluate before you trust.</h3>
+
+              <p>
+                Cross-validation provides a much stronger
+                basis for model comparison than performance
+                on a single convenient split.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           BACK TO PROJECTS
+           =================================================== -->
+
+      <section class="next">
+        <p>BACK TO THE PLAYBOOK</p>
+
+        <h2>
+          SEE THE REST OF MY PROJECTS.
+        </h2>
+
+        <a
+          class="home-transition"
+          href="../index.html#projects"
+        >
+          Project Playbook
+          <span>↗</span>
+        </a>
+      </section>
+    </main>
+
+
+    <footer>
+      <span>© 2026 YUTO SHIBATA</span>
+      <span>ICU SURVIVAL PREDICTION CASE STUDY</span>
+
+      <a
+        class="home-transition"
+        href="../index.html"
+      >
+        HOME ↗
+      </a>
+    </footer>
+  </div>
+
+
+  <div
+    id="transition-ball"
+    class="transition-ball"
+    aria-hidden="true"
+  >
+    ⚽
+  </div>
+
+
+  <script src="project.js?v=1"></script>
+</body>
+</html>

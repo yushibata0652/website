@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="FocusFeed case study — a distraction-free Instagram experience by Yuto Shibata."
+  >
+
+  <title>FocusFeed | Yuto Shibata</title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="project.css?v=1"
+  >
+</head>
+
+<body class="focusfeed-page">
+  <div class="page">
+
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+
+    <header class="nav-wrap">
+      <nav>
+        <a
+          class="crest home-transition"
+          href="../index.html"
+          aria-label="Home"
+        >
+          YS
+        </a>
+
+        <div class="case-label">
+          PROJECT CASE STUDY / FOCUSFEED
+        </div>
+
+        <a
+          class="back-link home-transition"
+          href="../index.html#projects"
+        >
+          ← Back to projects
+        </a>
+      </nav>
+    </header>
+
+
+    <main>
+
+      <!-- ===================================================
+           HERO
+           =================================================== -->
+
+      <section class="hero">
+        <div class="reveal-left">
+          <div class="kicker">
+            PERSONAL PROJECT · 2026
+          </div>
+
+          <h1>
+            FOCUS
+            <span>FEED.</span>
+          </h1>
+
+          <p class="hero-copy">
+            A distraction-free Instagram experience designed
+            to preserve messaging and social connection while
+            adding deliberate friction before opening Reels.
+          </p>
+
+          <div class="meta">
+            <span>JavaScript</span>
+            <span>Chrome Extension</span>
+            <span>Firebase Auth</span>
+            <span>Firestore</span>
+            <span>MutationObserver</span>
+          </div>
+        </div>
+
+
+        <div class="phone-wrap reveal-right">
+          <div class="phone-glow"></div>
+
+          <div class="phone">
+            <div class="phone-header">
+              <span>FocusFeed</span>
+              <span>● ACTIVE</span>
+            </div>
+
+            <div class="phone-feed">
+              <div class="feed-row">
+                <div class="feed-avatar"></div>
+
+                <div class="feed-lines">
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+
+              <div class="feed-row">
+                <div class="feed-avatar"></div>
+
+                <div class="feed-lines">
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+
+              <div class="blocked-panel">
+                <strong>REELS BLOCKED</strong>
+                <span>DESIGNED FOR FRICTION.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           01 / ORIGIN
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">01 / ORIGIN</div>
+
+          <h2>
+            WHY I <em>BUILT IT.</em>
+          </h2>
+        </div>
+
+        <p class="prose reveal">
+          I wanted to reduce the amount of time I spent
+          mindlessly opening Instagram Reels without losing
+          the parts of Instagram I actually valued, especially
+          messaging friends. Instead of trying to remove
+          Instagram entirely, I designed FocusFeed around
+          adding friction to one specific behavior.
+        </p>
+
+        <div class="context reveal-scale">
+          <b>The product idea</b>
+
+          <p>
+            Block Reels by default. When temporary access is
+            genuinely needed, request permission from a friend
+            and unlock it for a limited amount of time with a
+            six-digit approval code.
+          </p>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           02 / PROCESS
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">02 / PROCESS</div>
+
+          <h2>
+            FROM IDEA TO <em>WORKING FLOW.</em>
+          </h2>
+        </div>
+
+        <div class="grid-4">
+          <article class="card reveal-scale">
+            <span>01 / PROTOTYPE</span>
+            <h3>Test the interaction.</h3>
+
+            <p>
+              Started with a lightweight local prototype to
+              validate the request, approval-code, and timed
+              access experience before building the extension.
+            </p>
+          </article>
+
+          <article class="card reveal-scale">
+            <span>02 / BLOCKING</span>
+            <h3>Control Reels access.</h3>
+
+            <p>
+              Built a Chrome extension that detects Reels
+              routes, redirects blocked navigation, and removes
+              Reels-related interface elements.
+            </p>
+          </article>
+
+          <article class="card reveal-scale">
+            <span>03 / BACKEND</span>
+            <h3>Connect real users.</h3>
+
+            <p>
+              Added Google sign-in with Firebase Auth and
+              Firestore data for friend search, friend
+              requests, and accepted friend relationships.
+            </p>
+          </article>
+
+          <article class="card reveal-scale">
+            <span>04 / APPROVAL</span>
+            <h3>Make access temporary.</h3>
+
+            <p>
+              Added access requests, six-digit approval-code
+              validation, and a timer that automatically
+              re-enables blocking when the window expires.
+            </p>
+          </article>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           03 / SYSTEM
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">03 / SYSTEM</div>
+
+          <h2>
+            HOW THE <em>PIECES CONNECT.</em>
+          </h2>
+        </div>
+
+        <div class="flow">
+          <div class="flow-box reveal-left">
+            <b>Chrome Extension</b>
+
+            <span>
+              Detects Reels navigation, modifies the Instagram
+              interface, and enforces whether access is
+              currently allowed.
+            </span>
+          </div>
+
+          <div class="arrow">→</div>
+
+          <div class="flow-box reveal">
+            <b>Firebase</b>
+
+            <span>
+              Handles authentication and stores friendship,
+              request, and approval-related application state.
+            </span>
+          </div>
+
+          <div class="arrow">→</div>
+
+          <div class="flow-box reveal-right">
+            <b>Approval Window</b>
+
+            <span>
+              Valid code → temporary access → timer expires →
+              Reels automatically becomes blocked again.
+            </span>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           04 / CHALLENGES
+           =================================================== -->
+
+      <section class="section light">
+        <div class="inner">
+          <div class="heading reveal">
+            <div class="idx">04 / CHALLENGES</div>
+
+            <h2>
+              WHAT MADE IT <em>INTERESTING.</em>
+            </h2>
+          </div>
+
+          <div class="grid-2">
+            <article class="card reveal-left">
+              <span>DYNAMIC WEB APP</span>
+
+              <h3>
+                Instagram does not behave like a static page.
+              </h3>
+
+              <p>
+                Navigation and interface elements can change
+                without a full reload. I used a
+                MutationObserver so the extension can react
+                when Instagram modifies the DOM after the
+                initial page load.
+              </p>
+            </article>
+
+            <article class="card reveal-right">
+              <span>PRODUCT DESIGN</span>
+
+              <h3>
+                Blocking alone was not enough.
+              </h3>
+
+              <p>
+                The more interesting problem was creating
+                enough friction to interrupt an impulse while
+                still providing a controlled way to regain
+                temporary access when needed.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           05 / RESULT
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">05 / RESULT</div>
+
+          <h2>
+            WHAT WORKS <em>TODAY.</em>
+          </h2>
+        </div>
+
+        <div class="result-grid">
+          <div class="metric reveal-scale">
+            <strong>AUTH</strong>
+
+            <span>
+              Google sign-in and user-specific application
+              state through Firebase.
+            </span>
+          </div>
+
+          <div class="metric reveal-scale">
+            <strong>FRIENDS</strong>
+
+            <span>
+              Friend-code search, requests, accepting
+              requests, and friend-list management.
+            </span>
+          </div>
+
+          <div class="metric reveal-scale">
+            <strong>TIMER</strong>
+
+            <span>
+              Temporary approved Reels access followed by
+              automatic re-blocking.
+            </span>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           06 / NEXT
+           =================================================== -->
+
+      <section class="section">
+        <div class="heading reveal">
+          <div class="idx">06 / NEXT</div>
+
+          <h2>
+            WHERE I WOULD <em>TAKE IT.</em>
+          </h2>
+        </div>
+
+        <div class="grid-3">
+          <article class="card reveal-scale">
+            <span>SECURITY</span>
+
+            <h3>Harden the approval flow.</h3>
+
+            <p>
+              Add stronger expiration, rate-limiting,
+              validation, and server-controlled authorization
+              around approval codes.
+            </p>
+          </article>
+
+          <article class="card reveal-scale">
+            <span>UX</span>
+
+            <h3>Polish edge cases.</h3>
+
+            <p>
+              Improve error states, timer visibility,
+              friendship management, and the extension popup
+              experience.
+            </p>
+          </article>
+
+          <article class="card reveal-scale">
+            <span>MOBILE</span>
+
+            <h3>Explore a mobile strategy.</h3>
+
+            <p>
+              The current working implementation is a Chrome
+              extension. Native iOS support would require a
+              different technical approach and platform
+              constraints.
+            </p>
+          </article>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           07 / TAKEAWAYS
+           =================================================== -->
+
+      <section class="section takeaway">
+        <div class="inner">
+          <div class="heading reveal">
+            <div class="idx">07 / POST-MATCH</div>
+
+            <h2>
+              WHAT I <em>LEARNED.</em>
+            </h2>
+          </div>
+
+          <div class="grid-3">
+            <article class="card reveal-scale">
+              <span>WEB SYSTEMS</span>
+
+              <h3>Modern pages are constantly changing.</h3>
+
+              <p>
+                DOM observation and route detection are
+                necessary when building on top of a dynamic
+                single-page application.
+              </p>
+            </article>
+
+            <article class="card reveal-scale">
+              <span>BACKEND</span>
+
+              <h3>State turns a prototype into a product.</h3>
+
+              <p>
+                Authentication, users, friendships, and
+                approval requests made the project much closer
+                to a real multi-user application.
+              </p>
+            </article>
+
+            <article class="card reveal-scale">
+              <span>PRODUCT THINKING</span>
+
+              <h3>Friction can be a feature.</h3>
+
+              <p>
+                The goal was not to make access impossible.
+                It was to create a deliberate decision between
+                impulse and action.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================
+           BACK TO PROJECTS
+           =================================================== -->
+
+      <section class="next">
+        <p>BACK TO THE PLAYBOOK</p>
+
+        <h2>
+          SEE THE REST OF MY PROJECTS.
+        </h2>
+
+        <a
+          class="home-transition"
+          href="../index.html#projects"
+        >
+          Project Playbook
+          <span>↗</span>
+        </a>
+      </section>
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer>
+      <span>© 2026 YUTO SHIBATA</span>
+      <span>FOCUSFEED CASE STUDY</span>
+
+      <a
+        class="home-transition"
+        href="../index.html"
+      >
+        HOME ↗
+      </a>
+    </footer>
+  </div>
+
+
+  <!-- Reverse soccer-ball transition -->
+  <div
+    id="transition-ball"
+    class="transition-ball"
+    aria-hidden="true"
+  >
+    ⚽
+  </div>
+
+
+  <script src="project.js?v=1"></script>
+</body>
+</html>

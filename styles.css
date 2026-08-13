@@ -1,0 +1,1252 @@
+:root {
+  --navy: #071b33;
+  --maize: #ffcb05;
+  --cream: #f4f1e8;
+  --green: #174c3c;
+  --ink: #0b1725;
+  --muted: #68727b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "DM Sans", sans-serif;
+}
+
+
+/* Subtle grain over the whole page */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+
+/* =========================================================
+   2. NAVIGATION
+   ========================================================= */
+
+.nav-wrap {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  padding: 22px 5vw;
+  color: white;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1440px;
+  margin: auto;
+}
+
+.crest {
+  width: 48px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  color: var(--navy);
+  background: var(--maize);
+  text-decoration: none;
+  clip-path: polygon(
+    50% 0,
+    94% 16%,
+    88% 78%,
+    50% 100%,
+    12% 78%,
+    6% 16%
+  );
+  transition: transform 0.2s ease;
+}
+
+.crest:hover {
+  transform: translateY(-3px) rotate(-2deg);
+}
+
+.crest span {
+  font: 900 20px "Barlow Condensed";
+}
+
+.nav-links {
+  display: flex;
+  gap: 38px;
+}
+
+.nav-links a,
+.text-btn {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Small underline animation on nav links */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  width: 100%;
+  height: 2px;
+  background: var(--maize);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.25s ease;
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.contact-pill {
+  padding: 12px 17px;
+  border-radius: 30px;
+  background: white;
+  color: var(--navy);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.contact-pill span {
+  margin-left: 12px;
+}
+
+
+/* =========================================================
+   3. HERO
+   ========================================================= */
+
+.hero {
+  position: relative;
+  min-height: 780px;
+  height: 100vh;
+  overflow: hidden;
+
+  display: grid;
+  grid-template-columns: 1.2fr 0.65fr;
+  align-items: center;
+  gap: 8vw;
+
+  padding: 150px 7vw 90px;
+
+  background: var(--navy);
+  color: white;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  right: -10vw;
+  bottom: -30vh;
+
+  width: 70vw;
+  height: 75vw;
+
+  border-radius: 50%;
+  background: var(--green);
+  opacity: 0.55;
+}
+
+
+/* Soccer-pitch lines in hero */
+.pitch-lines {
+  position: absolute;
+  inset: 90px 3vw 60px;
+  border: 1px solid #ffffff18;
+}
+
+.pitch-lines::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 100%;
+  border-left: 1px solid #ffffff18;
+}
+
+.center-circle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  width: 300px;
+  height: 300px;
+
+  border: 1px solid #ffffff18;
+  border-radius: 50%;
+
+  transform: translate(-50%, -50%);
+}
+
+.hero-copy,
+.player-card {
+  position: relative;
+  z-index: 2;
+}
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.live-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 10px;
+
+  border-radius: 50%;
+  background: var(--maize);
+  box-shadow: 0 0 0 5px #ffcb0522;
+
+  animation: livePulse 2s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 5px #ffcb0522;
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px #ffcb050b;
+  }
+}
+
+
+.hero h1,
+.section-heading h2,
+.final-cta h2 {
+  margin: 28px 0;
+  font: 900 clamp(70px, 10vw, 150px) / 0.76 "Barlow Condensed";
+  letter-spacing: -0.045em;
+}
+
+.hero h1 span,
+.section-heading em {
+  color: var(--maize);
+  font-style: normal;
+}
+
+.intro {
+  max-width: 560px;
+  color: #d9e0e8;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-top: 34px;
+}
+
+.primary-btn {
+  display: inline-flex;
+  gap: 45px;
+
+  padding: 18px 20px;
+
+  background: var(--maize);
+  color: var(--navy);
+
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   4. PLAYER CARD
+   ========================================================= */
+
+.player-card {
+  justify-self: end;
+
+  width: min(340px, 100%);
+  height: 470px;
+  padding: 24px;
+
+  background: var(--maize);
+  color: var(--navy);
+
+  transform: rotate(2deg);
+  box-shadow: 18px 22px 0 #020d1b;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  font: 700 12px "Barlow Condensed";
+  letter-spacing: 0.12em;
+}
+
+.season {
+  padding: 3px 6px;
+  border: 1px solid;
+}
+
+.number {
+  position: absolute;
+  right: 17px;
+  top: 50px;
+
+  font: 900 190px / 0.9 "Barlow Condensed";
+  letter-spacing: -0.08em;
+  opacity: 0.12;
+}
+
+.player-info {
+  position: absolute;
+  left: 24px;
+  bottom: 105px;
+}
+
+.player-info h2 {
+  margin: 0;
+  font: 900 58px / 0.78 "Barlow Condensed";
+}
+
+.player-info p {
+  font: 700 11px "Barlow Condensed";
+  letter-spacing: 0.16em;
+}
+
+.stats {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+
+  display: flex;
+  justify-content: space-between;
+
+  padding-top: 14px;
+  border-top: 1px solid #071b3344;
+}
+
+.stats div {
+  display: flex;
+  flex-direction: column;
+}
+
+.stats strong {
+  font: 800 23px "Barlow Condensed";
+}
+
+.stats span {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+
+/* =========================================================
+   5. SCORE STRIP + TECHNOLOGY TICKER
+   ========================================================= */
+
+.score-strip {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  background: #051426;
+
+  font: 700 10px "Barlow Condensed";
+  letter-spacing: 0.18em;
+}
+
+.ticker {
+  overflow: hidden;
+  padding: 15px 0;
+  background: var(--maize);
+  white-space: nowrap;
+}
+
+.ticker div {
+  font: 800 18px "Barlow Condensed";
+  letter-spacing: 0.08em;
+  animation: marquee 22s linear infinite;
+}
+
+.ticker i {
+  margin: 0 28px;
+  font-size: 9px;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+
+/* =========================================================
+   6. SHARED SECTION STYLES
+   ========================================================= */
+
+.section {
+  padding: 120px 7vw;
+}
+
+.section-heading {
+  display: grid;
+  grid-template-columns: 130px 1fr 280px;
+  align-items: end;
+
+  margin-bottom: 70px;
+}
+
+.section-heading > p {
+  font: 800 12px "Barlow Condensed";
+  letter-spacing: 0.15em;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: clamp(62px, 8vw, 112px);
+  line-height: 0.78;
+}
+
+.section-heading > span {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.section-heading.light > p {
+  color: #b9c4d0;
+}
+
+
+/* =========================================================
+   7. CAREER / TIMELINE
+   ========================================================= */
+
+.career {
+  background: var(--cream);
+}
+
+.timeline {
+  border-top: 1px solid #b6b7b0;
+}
+
+.job {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 110px 70px 1fr;
+  gap: 26px;
+
+  padding: 42px 0;
+
+  border-bottom: 1px solid #b6b7b0;
+}
+
+.year {
+  font: 800 20px "Barlow Condensed";
+}
+
+.club-mark {
+  width: 50px;
+  height: 50px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+  background: var(--green);
+  color: white;
+
+  font: 900 23px "Barlow Condensed";
+}
+
+.club-mark.ford {
+  background: #0b4f92;
+}
+
+.club-mark.nidec {
+  background: #c9242b;
+}
+
+.job-body p {
+  margin: 0;
+  color: var(--muted);
+  font: 700 10px "Barlow Condensed";
+  letter-spacing: 0.14em;
+}
+
+.job-body h3 {
+  margin: 6px 0 16px;
+  font: 800 33px "Barlow Condensed";
+}
+
+.job-body ul {
+  max-width: 850px;
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+
+  color: #505b63;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.job-body li::before {
+  content: "→";
+  margin-right: 8px;
+  color: var(--green);
+  font-weight: 700;
+}
+
+.status {
+  position: absolute;
+  right: 0;
+  top: 43px;
+
+  padding: 7px 10px;
+
+  background: var(--maize);
+
+  font: 800 9px "Barlow Condensed";
+  letter-spacing: 0.1em;
+}
+
+
+/* =========================================================
+   8. PROJECT PLAYBOOK
+   ========================================================= */
+
+.projects {
+  background: var(--navy);
+  color: white;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.project {
+  position: relative;
+  min-height: 380px;
+  overflow: hidden;
+
+  padding: 28px;
+
+  border: 1px solid #ffffff24;
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+.project:hover {
+  transform: translateY(-6px);
+  border-color: var(--maize);
+}
+
+.project.featured {
+  grid-column: span 2;
+  background: var(--green);
+}
+
+.project-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.project-num {
+  color: #aeb9c6;
+  font: 800 12px "Barlow Condensed";
+}
+
+.tag {
+  display: inline-block;
+  margin-top: 70px;
+  padding: 7px 9px;
+
+  background: #ffffff12;
+
+  font: 700 9px "Barlow Condensed";
+  letter-spacing: 0.15em;
+}
+
+.project h3 {
+  margin: 14px 0 8px;
+  font: 800 43px "Barlow Condensed";
+}
+
+.project p {
+  max-width: 570px;
+  color: #bcc7d1;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+
+/* "View case study" hover label */
+.project-open {
+  position: absolute;
+  right: 28px;
+  top: 28px;
+
+  color: var(--maize);
+
+  font: 800 9px "Barlow Condensed";
+  letter-spacing: 0.13em;
+
+  opacity: 0;
+  transform: translateX(-8px);
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.project:hover .project-open {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* Project metric */
+.metric {
+  position: absolute;
+  bottom: 28px;
+
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.metric strong {
+  color: var(--maize);
+  font: 800 42px "Barlow Condensed";
+}
+
+.metric span {
+  color: #aeb9c6;
+  font-size: 10px;
+}
+
+
+/* Soccer formation graphic inside featured project */
+.formation {
+  position: absolute;
+  right: 40px;
+  bottom: -55px;
+
+  width: 180px;
+  height: 240px;
+
+  border: 1px solid #ffffff33;
+}
+
+.formation::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  height: 100%;
+  border-left: 1px solid #ffffff33;
+}
+
+.formation span {
+  position: absolute;
+
+  width: 15px;
+  height: 15px;
+
+  border-radius: 50%;
+  background: var(--maize);
+}
+
+.formation span:nth-child(1) {
+  left: 15px;
+  top: 40px;
+}
+
+.formation span:nth-child(2) {
+  right: 15px;
+  top: 40px;
+}
+
+.formation span:nth-child(3) {
+  left: 50%;
+  top: 105px;
+}
+
+.formation span:nth-child(4) {
+  left: 20px;
+  top: 170px;
+}
+
+.formation span:nth-child(5) {
+  right: 20px;
+  top: 170px;
+}
+
+
+/* =========================================================
+   9. INTEREST-TAB TRANSITION
+   ========================================================= */
+
+/*
+   interests.css already defines the interest panel.
+   This more-specific selector overrides its old switching
+   animation without requiring you to rewrite interests.css.
+*/
+.interests .interest-stage.switching {
+  animation: interestSlide 0.38s ease;
+}
+
+@keyframes interestSlide {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  42% {
+    opacity: 0;
+    transform: translateX(22px);
+  }
+
+  58% {
+    opacity: 0;
+    transform: translateX(-22px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+/* =========================================================
+   10. SKILLS / STARTING LINEUP
+   ========================================================= */
+
+.skills {
+  background: #e8e4d8;
+}
+
+.skills-board {
+  background: var(--cream);
+  border: 1px solid #bcbdb7;
+}
+
+.skill-group {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+
+  padding: 28px;
+
+  border-bottom: 1px solid #c9c9c2;
+}
+
+.skill-group:last-child {
+  border: 0;
+}
+
+.skill-group > span {
+  font: 800 11px "Barlow Condensed";
+  letter-spacing: 0.12em;
+}
+
+.skill-group div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.skill-group b {
+  padding: 8px 13px;
+
+  border: 1px solid #aeb1ac;
+  border-radius: 20px;
+
+  font: 600 12px "DM Sans";
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.skill-group b:hover {
+  transform: translateY(-2px);
+  border-color: var(--green);
+  background: white;
+}
+
+
+/* =========================================================
+   11. FINAL CTA
+   ========================================================= */
+
+.final-cta {
+  position: relative;
+  min-height: 610px;
+  overflow: hidden;
+
+  padding: 120px 20px;
+
+  background: var(--maize);
+
+  text-align: center;
+}
+
+.final-cta::before,
+.final-cta::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+
+  width: 500px;
+  height: 500px;
+
+  border: 1px solid #071b3322;
+  border-radius: 50%;
+
+  transform: translateY(-50%);
+}
+
+.final-cta::before {
+  left: -320px;
+}
+
+.final-cta::after {
+  right: -320px;
+}
+
+.final-cta p {
+  font: 800 11px "Barlow Condensed";
+  letter-spacing: 0.17em;
+}
+
+.final-cta h2 {
+  margin: 30px 0 45px;
+  color: var(--navy);
+  font-size: clamp(68px, 9vw, 130px);
+}
+
+.final-cta a {
+  display: inline-flex;
+  gap: 55px;
+
+  padding: 18px 22px;
+
+  background: var(--navy);
+  color: white;
+
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ball {
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  margin: 0 auto 20px;
+
+  border: 3px solid var(--navy);
+  border-radius: 50%;
+}
+
+
+/* =========================================================
+   12. BUTTON / LINK MICRO-INTERACTIONS
+   ========================================================= */
+
+.primary-btn,
+.contact-pill,
+.resume-primary,
+.interest-btn,
+.final-cta a {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.primary-btn:hover,
+.contact-pill:hover,
+.resume-primary:hover,
+.final-cta a:hover {
+  transform: translateY(-3px);
+}
+
+.primary-btn:active,
+.contact-pill:active,
+.resume-primary:active,
+.interest-btn:active,
+.final-cta a:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+
+/* =========================================================
+   13. SCROLL-REVEAL ANIMATIONS
+   ========================================================= */
+
+/*
+   JavaScript adds .visible when an element enters the viewport.
+
+   Use:
+   class="reveal"        -> rises from below
+   class="reveal-left"   -> slides from left
+   class="reveal-right"  -> slides from right
+   class="reveal-scale"  -> gently scales in
+*/
+
+/* Default rise */
+/* Default rise */
+.reveal {
+  opacity: 0;
+  transform: translateY(60px);
+
+  transition:
+    opacity 1.2s ease,
+    transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* From left */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-100px);
+
+  transition:
+    opacity 1.3s ease,
+    transform 1.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* From right */
+.reveal-right {
+  opacity: 0;
+  transform: translateX(100px);
+
+  transition:
+    opacity 1.3s ease,
+    transform 1.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* Scale in */
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.86);
+
+  transition:
+    opacity 1.15s ease,
+    transform 1.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+
+/*
+   Project cards have their own hover transform.
+   Once visible, keep the scale reveal complete and allow
+   the project hover rule to lift the card normally.
+*/
+.project.reveal-scale.visible:hover {
+  transform: translateY(-6px) scale(1);
+}
+
+.player-card.reveal-right {
+  transform: translateX(70px) rotate(2deg);
+}
+
+.player-card.reveal-right.visible {
+  transform: translateX(0) rotate(2deg);
+}
+
+
+/* =========================================================
+   14. SOCCER-BALL PAGE TRANSITION
+   ========================================================= */
+
+/*
+   Add this once before </body> in index.html:
+
+   <div id="transition-ball"
+        class="transition-ball"
+        aria-hidden="true">⚽</div>
+
+   script.js will add the .kick class before navigating.
+*/
+
+.transition-ball {
+  position: fixed;
+  left: -80px;
+  bottom: 40px;
+
+  z-index: 9999;
+
+  font-size: 48px;
+
+  pointer-events: none;
+  opacity: 0;
+}
+
+.transition-ball.kick {
+  opacity: 1;
+  animation: kickAcross 1.4s cubic-bezier(0.3, 0.7, 0.4, 1) forwards;
+}
+
+@keyframes kickAcross {
+  0% {
+    left: -80px;
+    bottom: 40px;
+    transform: rotate(0deg) scale(0.8);
+  }
+
+  45% {
+    bottom: 220px;
+    transform: rotate(360deg) scale(1.15);
+  }
+
+  100% {
+    left: calc(100vw + 80px);
+    bottom: 40px;
+    transform: rotate(900deg) scale(0.8);
+  }
+}
+
+
+/* =========================================================
+   15. FOOTER
+   ========================================================= */
+
+footer {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 25px 7vw;
+
+  background: #051426;
+  color: #a9b5c1;
+
+  font: 700 10px "Barlow Condensed";
+  letter-spacing: 0.12em;
+}
+
+footer a {
+  color: var(--maize);
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   16. TABLET / MOBILE
+   ========================================================= */
+
+@media (max-width: 850px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hero {
+    height: auto;
+    min-height: 100vh;
+    grid-template-columns: 1fr;
+    padding-top: 130px;
+  }
+
+  .player-card {
+    justify-self: center;
+    width: 300px;
+    height: 410px;
+    margin-bottom: 40px;
+  }
+
+  .hero h1 {
+    font-size: 76px;
+  }
+
+  .section {
+    padding: 85px 6vw;
+  }
+
+  .section-heading {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading > span {
+    margin-top: 24px;
+  }
+
+  .job {
+    grid-template-columns: 60px 1fr;
+  }
+
+  .job-body {
+    grid-column: 2;
+  }
+
+  .club-mark {
+    grid-row: 1;
+  }
+
+  .status {
+    display: none;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project.featured {
+    grid-column: auto;
+  }
+
+  .formation {
+    opacity: 0.35;
+  }
+
+  .skill-group {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .score-strip span:nth-child(2) {
+    display: none;
+  }
+
+  /* Smaller horizontal travel on mobile */
+  .reveal-left {
+    transform: translateX(-35px);
+  }
+
+  .reveal-right {
+    transform: translateX(35px);
+  }
+
+  .reveal-left.visible,
+  .reveal-right.visible {
+    transform: translateX(0);
+  }
+}
+
+
+@media (max-width: 480px) {
+  .hero {
+    padding-left: 6vw;
+    padding-right: 6vw;
+  }
+
+  .hero-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .player-card {
+    width: 270px;
+  }
+
+  .project {
+    min-height: 420px;
+  }
+
+  .section-heading h2 {
+    font-size: 58px;
+  }
+
+  footer {
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+}
+
+
+/* =========================================================
+   17. ACCESSIBILITY: REDUCED MOTION
+   ========================================================= */
+
+/*
+   If a visitor has reduced-motion enabled at the OS/browser
+   level, remove the large transitions and looping animations.
+*/
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale {
+    opacity: 1;
+    transform: none;
+  }
+
+  .transition-ball {
+    display: none;
+  }
+}

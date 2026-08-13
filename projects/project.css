@@ -1,0 +1,1232 @@
+/* =========================================================
+   YUTO SHIBATA — PROJECT CASE STUDIES
+   Shared stylesheet for all project pages
+   ========================================================= */
+
+
+/* =========================================================
+   1. DESIGN TOKENS
+   ========================================================= */
+
+:root {
+  --navy: #071b33;
+  --navy-dark: #051426;
+  --navy-deep: #03101e;
+  --maize: #ffcb05;
+  --cream: #f4f1e8;
+  --ink: #0b1725;
+  --muted: #9aa8b7;
+  --green: #174c3c;
+
+  --line: rgba(255, 255, 255, 0.12);
+  --panel: rgba(255, 255, 255, 0.035);
+
+  --accent-1: #3b82f6;
+  --accent-2: #7c5ce0;
+  --accent-3: #e58b4f;
+}
+
+
+/* Page-specific accent themes */
+.focusfeed-page {
+  --accent-1: #d54b92;
+  --accent-2: #6f59d9;
+  --accent-3: #e58b4f;
+}
+
+.image-page {
+  --accent-1: #3b82f6;
+  --accent-2: #7c5ce0;
+  --accent-3: #5e9cf6;
+}
+
+.icu-page {
+  --accent-1: #35a987;
+  --accent-2: #4d87d9;
+  --accent-3: #8bc5b3;
+}
+
+.lc2k-page {
+  --accent-1: #ffcb05;
+  --accent-2: #4d87d9;
+  --accent-3: #89a8c7;
+}
+
+
+/* =========================================================
+   2. RESET / GLOBAL
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+
+  background:
+    radial-gradient(
+      circle at 15% 12%,
+      color-mix(in srgb, var(--accent-1) 18%, transparent),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 85% 25%,
+      color-mix(in srgb, var(--accent-2) 18%, transparent),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      var(--navy-dark) 0%,
+      var(--navy) 55%,
+      #081827 100%
+    );
+
+  color: white;
+  font-family: "DM Sans", sans-serif;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  opacity: 0.18;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 54px 54px;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+
+  opacity: 0.025;
+
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+a {
+  color: inherit;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* =========================================================
+   3. NAVIGATION
+   ========================================================= */
+
+.nav-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+
+  width: 100%;
+  padding: 18px 5vw;
+
+  border-bottom: 1px solid var(--line);
+  background: rgba(5, 20, 38, 0.72);
+  backdrop-filter: blur(14px);
+}
+
+nav {
+  max-width: 1440px;
+  margin: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.crest {
+  width: 48px;
+  height: 54px;
+
+  display: grid;
+  place-items: center;
+
+  background: var(--maize);
+  color: var(--navy);
+
+  clip-path: polygon(
+    50% 0,
+    94% 16%,
+    88% 78%,
+    50% 100%,
+    12% 78%,
+    6% 16%
+  );
+
+  text-decoration: none;
+  font: 900 20px "Barlow Condensed";
+
+  transition: transform 0.2s ease;
+}
+
+.crest:hover {
+  transform: translateY(-2px) rotate(-2deg);
+}
+
+.case-label {
+  color: var(--muted);
+  font: 800 10px "Barlow Condensed";
+  letter-spacing: 0.17em;
+  text-align: center;
+}
+
+.back-link {
+  color: #dce6ef;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--maize);
+  transform: translateX(-3px);
+}
+
+
+/* =========================================================
+   4. HERO
+   ========================================================= */
+
+.hero {
+  max-width: 1440px;
+  min-height: 700px;
+  margin: auto;
+  padding: 105px 7vw 95px;
+
+  display: grid;
+  grid-template-columns: 1.12fr 0.88fr;
+  align-items: center;
+  gap: 7vw;
+}
+
+.kicker {
+  color: #d8e2ec;
+  font: 800 11px "Barlow Condensed";
+  letter-spacing: 0.17em;
+}
+
+.kicker::before {
+  content: "";
+
+  display: inline-block;
+
+  width: 8px;
+  height: 8px;
+  margin-right: 10px;
+
+  border-radius: 50%;
+  background: var(--maize);
+  box-shadow: 0 0 0 6px rgba(255, 203, 5, 0.12);
+}
+
+.hero h1 {
+  margin: 28px 0 24px;
+
+  font: 900 clamp(78px, 9vw, 145px) / 0.74 "Barlow Condensed";
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+
+.hero h1 span {
+  display: block;
+  color: var(--maize);
+}
+
+.hero-copy {
+  max-width: 700px;
+
+  color: #c8d3de;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin-top: 28px;
+}
+
+.meta span {
+  padding: 9px 13px;
+
+  border: 1px solid var(--line);
+  border-radius: 30px;
+
+  background: var(--panel);
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   5. SHARED HERO VISUAL
+   ========================================================= */
+
+.project-visual {
+  position: relative;
+  min-height: 470px;
+  overflow: hidden;
+
+  display: grid;
+  place-items: center;
+
+  padding: 28px;
+
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.project-visual::before {
+  content: "";
+
+  position: absolute;
+
+  width: 370px;
+  height: 370px;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent-1) 24%, transparent),
+    transparent 66%
+  );
+}
+
+.visual-card {
+  position: relative;
+  z-index: 1;
+
+  width: min(420px, 100%);
+  padding: 28px;
+
+  background: #f6f3ea;
+  color: var(--ink);
+
+  box-shadow: 16px 18px 0 rgba(0, 0, 0, 0.22);
+}
+
+.visual-card .mini {
+  color: #607080;
+  font: 800 10px "Barlow Condensed";
+  letter-spacing: 0.14em;
+}
+
+.visual-card h3 {
+  margin: 15px 0 10px;
+  font: 900 38px "Barlow Condensed";
+}
+
+.visual-card p {
+  margin: 0;
+
+  color: #53616b;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   6. FOCUSFEED HERO VISUAL
+   ========================================================= */
+
+.phone-wrap {
+  position: relative;
+  min-height: 500px;
+
+  display: grid;
+  place-items: center;
+}
+
+.phone-glow {
+  position: absolute;
+
+  width: 390px;
+  height: 390px;
+
+  border-radius: 50%;
+
+  background: conic-gradient(
+    from 30deg,
+    color-mix(in srgb, var(--accent-1) 55%, transparent),
+    color-mix(in srgb, var(--accent-2) 48%, transparent),
+    color-mix(in srgb, var(--accent-3) 38%, transparent),
+    color-mix(in srgb, var(--accent-1) 55%, transparent)
+  );
+
+  filter: blur(48px);
+  opacity: 0.7;
+}
+
+.phone {
+  position: relative;
+  z-index: 1;
+
+  width: 270px;
+  height: 520px;
+  overflow: hidden;
+
+  border: 10px solid #101820;
+  border-radius: 42px;
+
+  background: #f8f8f8;
+  color: var(--ink);
+
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.42);
+
+  transform: rotate(4deg);
+}
+
+.phone::before {
+  content: "";
+
+  position: absolute;
+  left: 50%;
+  top: 0;
+
+  width: 92px;
+  height: 22px;
+
+  border-radius: 0 0 16px 16px;
+  background: #101820;
+
+  transform: translateX(-50%);
+}
+
+.phone-header {
+  height: 76px;
+  padding: 33px 18px 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #d9d9d9;
+
+  font: 800 12px "DM Sans";
+}
+
+.phone-feed {
+  padding: 18px;
+}
+
+.feed-row {
+  height: 58px;
+  margin-bottom: 12px;
+
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.feed-avatar {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    var(--accent-1),
+    var(--accent-2)
+  );
+}
+
+.feed-lines {
+  display: grid;
+  gap: 7px;
+}
+
+.feed-lines span {
+  display: block;
+  height: 7px;
+
+  border-radius: 8px;
+  background: #d6d9db;
+}
+
+.feed-lines span:last-child {
+  width: 65%;
+}
+
+.blocked-panel {
+  margin-top: 28px;
+  padding: 20px 16px;
+
+  border: 2px solid var(--navy);
+  background: var(--maize);
+
+  text-align: center;
+}
+
+.blocked-panel strong {
+  display: block;
+  margin-bottom: 7px;
+
+  color: var(--navy);
+
+  font: 900 28px "Barlow Condensed";
+}
+
+.blocked-panel span {
+  color: var(--navy);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+
+/* =========================================================
+   7. IMAGE CLASSIFICATION HERO VISUAL
+   ========================================================= */
+
+.model-comparison {
+  display: grid;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.model-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 46px;
+  align-items: center;
+  gap: 12px;
+}
+
+.model-row b {
+  font: 800 13px "Barlow Condensed";
+}
+
+.model-bar {
+  height: 10px;
+  overflow: hidden;
+
+  border-radius: 10px;
+  background: #d9e1e6;
+}
+
+.model-bar span {
+  display: block;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: linear-gradient(
+    90deg,
+    var(--accent-1),
+    var(--accent-2)
+  );
+}
+
+.model-row:first-child .model-bar span {
+  width: 97%;
+}
+
+.model-row:nth-child(2) .model-bar span {
+  width: 70%;
+}
+
+.model-row em {
+  color: #5b6974;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   8. ICU HERO VISUAL
+   ========================================================= */
+
+.signal {
+  position: relative;
+
+  height: 120px;
+  margin: 24px 0 20px;
+
+  border-top: 1px solid #d8dddd;
+  border-bottom: 1px solid #d8dddd;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0 9%,
+      #e5e8e9 9% 10%,
+      transparent 10% 19%,
+      #e5e8e9 19% 20%,
+      transparent 20% 29%,
+      #e5e8e9 29% 30%,
+      transparent 30%
+    );
+}
+
+.signal-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+
+  height: 3px;
+
+  background: linear-gradient(
+    90deg,
+    var(--accent-1) 0 12%,
+    transparent 12% 15%,
+    var(--accent-1) 15% 26%,
+    transparent 26% 29%,
+    var(--accent-2) 29% 52%,
+    transparent 52% 55%,
+    var(--accent-1) 55% 72%,
+    transparent 72% 75%,
+    var(--accent-2) 75% 100%
+  );
+
+  transform: translateY(-50%);
+}
+
+.signal-points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+}
+
+.signal-points span {
+  padding: 10px 8px;
+
+  border: 1px solid #d3d8d9;
+
+  color: #5e6970;
+
+  font-size: 9px;
+  font-weight: 800;
+  text-align: center;
+}
+
+
+/* =========================================================
+   9. LC-2K HERO VISUAL
+   ========================================================= */
+
+.terminal {
+  padding: 0;
+
+  background: #07131f;
+  color: #d8e4ed;
+
+  border: 1px solid #22384a;
+
+  box-shadow: 16px 18px 0 rgba(0, 0, 0, 0.22);
+}
+
+.terminal-top {
+  padding: 12px 14px;
+
+  border-bottom: 1px solid #22384a;
+
+  color: #8ea0ae;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.terminal-body {
+  padding: 24px;
+
+  font-family: "DM Mono", "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.terminal-body .prompt {
+  color: var(--maize);
+}
+
+.terminal-body .dim {
+  color: #7d93a5;
+}
+
+.terminal-body .ok {
+  color: #7ad7b4;
+}
+
+
+/* =========================================================
+   10. CONTENT SECTIONS
+   ========================================================= */
+
+.section {
+  max-width: 1440px;
+  margin: auto;
+  padding: 100px 7vw;
+}
+
+.section + .section {
+  border-top: 1px solid var(--line);
+}
+
+.heading {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 24px;
+
+  margin-bottom: 48px;
+}
+
+.idx {
+  color: var(--maize);
+  font: 800 11px "Barlow Condensed";
+  letter-spacing: 0.15em;
+}
+
+.heading h2 {
+  margin: 0;
+
+  font: 900 clamp(50px, 6.5vw, 90px) / 0.82 "Barlow Condensed";
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.heading h2 em {
+  color: var(--maize);
+  font-style: normal;
+}
+
+.prose {
+  max-width: 900px;
+  margin-left: 144px;
+
+  color: #c4d0db;
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.context {
+  max-width: 900px;
+  margin: 40px 0 0 144px;
+  padding: 30px;
+
+  border: 1px solid var(--line);
+
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent-1) 9%, transparent),
+    color-mix(in srgb, var(--accent-2) 9%, transparent)
+  );
+}
+
+.context b {
+  display: block;
+  margin-bottom: 10px;
+
+  font: 900 30px "Barlow Condensed";
+}
+
+.context p {
+  margin: 0;
+
+  color: #c4d0db;
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+
+/* =========================================================
+   11. CONTENT CARDS / GRIDS
+   ========================================================= */
+
+.grid-2,
+.grid-3,
+.grid-4 {
+  display: grid;
+  gap: 14px;
+  margin-top: 38px;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.card {
+  min-height: 180px;
+  padding: 26px;
+
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.card > span {
+  color: var(--maize);
+  font: 800 10px "Barlow Condensed";
+  letter-spacing: 0.14em;
+}
+
+.card h3 {
+  margin: 15px 0 9px;
+  font: 800 28px "Barlow Condensed";
+}
+
+.card p {
+  margin: 0;
+
+  color: #a8b5c1;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   12. FLOW / ARCHITECTURE
+   ========================================================= */
+
+.flow {
+  display: grid;
+  grid-template-columns: 1fr 46px 1fr 46px 1fr;
+  align-items: center;
+  gap: 10px;
+
+  margin-top: 38px;
+}
+
+.flow-box {
+  min-height: 130px;
+  padding: 24px;
+
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.flow-box b {
+  display: block;
+  margin-bottom: 10px;
+
+  font: 800 23px "Barlow Condensed";
+}
+
+.flow-box span {
+  color: #a7b4c0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.arrow {
+  color: var(--maize);
+
+  font: 900 28px "Barlow Condensed";
+  text-align: center;
+}
+
+
+/* =========================================================
+   13. LIGHT SECTION
+   ========================================================= */
+
+.light {
+  max-width: none;
+
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.light .inner {
+  max-width: 1440px;
+  margin: auto;
+}
+
+.light .idx,
+.light .heading h2 em {
+  color: var(--navy);
+}
+
+.light .card {
+  border-color: #cdd2d4;
+  background: white;
+}
+
+.light .card > span {
+  color: #66717b;
+}
+
+.light .card p {
+  color: #59656d;
+}
+
+
+/* =========================================================
+   14. RESULTS / METRICS
+   ========================================================= */
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+
+  margin-top: 38px;
+}
+
+.metric {
+  padding: 25px;
+
+  border-top: 3px solid var(--maize);
+
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.metric strong {
+  display: block;
+  margin-bottom: 8px;
+
+  color: var(--maize);
+
+  font: 900 42px "Barlow Condensed";
+}
+
+.metric span {
+  color: #a8b5c1;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   15. TAKEAWAY SECTION
+   ========================================================= */
+
+.takeaway {
+  max-width: none;
+
+  background: var(--maize);
+  color: var(--navy);
+}
+
+.takeaway .inner {
+  max-width: 1440px;
+  margin: auto;
+}
+
+.takeaway .idx,
+.takeaway .heading h2 em {
+  color: var(--navy);
+}
+
+.takeaway .card {
+  border-color: rgba(7, 27, 51, 0.22);
+  background: var(--maize);
+}
+
+.takeaway .card > span {
+  color: rgba(7, 27, 51, 0.62);
+}
+
+.takeaway .card p {
+  color: var(--navy);
+}
+
+
+/* =========================================================
+   16. NEXT PROJECTS CTA
+   ========================================================= */
+
+.next {
+  padding: 85px 7vw 105px;
+
+  background: var(--navy-dark);
+
+  text-align: center;
+}
+
+.next p {
+  color: var(--muted);
+
+  font: 800 10px "Barlow Condensed";
+  letter-spacing: 0.16em;
+}
+
+.next h2 {
+  margin: 22px 0 34px;
+
+  font: 900 clamp(54px, 7vw, 94px) / 0.82 "Barlow Condensed";
+}
+
+.next a {
+  display: inline-flex;
+  gap: 45px;
+
+  padding: 17px 20px;
+
+  background: var(--maize);
+  color: var(--navy);
+
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 800;
+
+  transition: transform 0.2s ease;
+}
+
+.next a:hover {
+  transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   17. FOOTER
+   ========================================================= */
+
+footer {
+  padding: 25px 7vw;
+
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  border-top: 1px solid var(--line);
+  background: var(--navy-deep);
+
+  color: #8fa0af;
+
+  font: 700 10px "Barlow Condensed";
+  letter-spacing: 0.12em;
+}
+
+footer a {
+  color: var(--maize);
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   18. SCROLL REVEALS
+   ========================================================= */
+
+.reveal,
+.reveal-left,
+.reveal-right,
+.reveal-scale {
+  opacity: 0;
+
+  transition:
+    opacity 1.2s ease,
+    transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal {
+  transform: translateY(60px);
+}
+
+.reveal-left {
+  transform: translateX(-90px);
+}
+
+.reveal-right {
+  transform: translateX(90px);
+}
+
+.reveal-scale {
+  transform: scale(0.9);
+}
+
+.reveal.visible,
+.reveal-left.visible,
+.reveal-right.visible,
+.reveal-scale.visible {
+  opacity: 1;
+  transform: none;
+}
+
+
+/* =========================================================
+   19. REVERSE SOCCER-BALL TRANSITION
+   ========================================================= */
+
+/*
+   Project page -> homepage:
+   ball travels right to left.
+*/
+
+.transition-ball {
+  position: fixed;
+  right: -80px;
+  bottom: 40px;
+  z-index: 9999;
+
+  font-size: 52px;
+
+  pointer-events: none;
+  opacity: 0;
+}
+
+.transition-ball.kick-back {
+  opacity: 1;
+
+  animation:
+    kickBack 1.4s cubic-bezier(0.3, 0.7, 0.4, 1)
+    forwards;
+}
+
+@keyframes kickBack {
+  0% {
+    right: -80px;
+    bottom: 40px;
+
+    transform:
+      rotate(0deg)
+      scale(0.8);
+  }
+
+  45% {
+    bottom: 220px;
+
+    transform:
+      rotate(-360deg)
+      scale(1.15);
+  }
+
+  100% {
+    right: calc(100vw + 80px);
+    bottom: 40px;
+
+    transform:
+      rotate(-900deg)
+      scale(0.8);
+  }
+}
+
+
+/* =========================================================
+   20. RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 950px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .heading {
+    grid-template-columns: 1fr;
+  }
+
+  .prose,
+  .context {
+    margin-left: 0;
+  }
+
+  .grid-4,
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .flow {
+    grid-template-columns: 1fr;
+  }
+
+  .arrow {
+    transform: rotate(90deg);
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 650px) {
+  .case-label {
+    display: none;
+  }
+
+  .hero {
+    padding-left: 6vw;
+    padding-right: 6vw;
+  }
+
+  .hero h1 {
+    font-size: 72px;
+  }
+
+  .section {
+    padding: 78px 6vw;
+  }
+
+  .grid-4,
+  .grid-3,
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .reveal-left {
+    transform: translateX(-35px);
+  }
+
+  .reveal-right {
+    transform: translateX(35px);
+  }
+}
+
+
+/* =========================================================
+   21. REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .transition-ball {
+    display: none;
+  }
+}
