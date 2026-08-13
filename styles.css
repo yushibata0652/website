@@ -443,6 +443,9 @@ nav {
 .section-heading.light > p {
   color: #b9c4d0;
 }
+.section-heading.light > span {
+  color: #b9c4d0;
+}
 
 
 /* =========================================================
