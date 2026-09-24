@@ -1,0 +1,676 @@
+1. The 30-second pitch
+AeroLedger is a demo “mission control” app that audits aerospace invoices against historical launch-cost data.
+An AI-style agent (built with LangGraph) checks each invoice. If the price looks normal, it auto-approves and writes it to a ledger. If the price looks suspicious (more than 25% over the historical baseline), it pauses and asks a human CFO for a decision. That decision is saved in memory so similar invoices can be auto-approved next time.
+Live links:
+
+UI: https://etko18.github.io/AeroLedger/
+API docs: https://aeroledger-api-36ir.onrender.com/docs
+
+Demo login: etko / password
+9:04 PMdata scraper2. The problem (why this exists)
+In aerospace procurement, invoices come in for vendors and parts (in this demo: launch vehicles + vehicle class, or fictional parts). Paying them blindly is risky; checking every line by hand is slow.
+AeroLedger shows a modern pattern:
+
+Use historical data as a baseline (“what did this usually cost?”)
+Automate the easy cases
+Escalate the weird cases to a human
+Remember the human’s rule so you don’t ask the same question twice
+
+That’s the core story interviewers care about: automation + human-in-the-loop + memory.
+9:04 PMdata scraper3. Architecture (big picture)
+Think of three layers:
+
+
+
+Piece
+What it is
+Role
+frontend/
+Next.js + React + TypeScript
+“Mission Control” UI
+backend/main.py
+FastAPI
+Login, process invoice, resume after CFO, reset demo
+backend/agent.py
+LangGraph state machine
+The decision workflow
+backend/db.py
+DuckDB
+Historical baselines + reconciled ledger
+backend/memory.py
+ChromaDB
+Semantic memory of CFO rules
+data/space_ledger_seed.csv
+Public OWID launch-cost data
+Seed baselines
+Why split UI and API? The browser can’t safely run the agent or database. Pages hosts the static UI; Render hosts the Python server.
+9:04 PMdata scraper4. The demo story (what you’d click in a presentation)
+Open the UI and sign in.
+You’ll see a queue of sample invoices (Falcon 9, Atlas V, Soyuz, etc.).
+Hit run batch. The UI sends them one-by-one to /process-invoice.
+Cheap / reasonable invoices get APPROVED and turn green.
+An expensive / unknown one gets FLAGGED, the batch halts, and a CFO panel appears.
+You type an override rule (e.g. “Approve Atlas V Medium under special contract”).
+Backend saves that rule in Chroma, resumes the paused agent, commits the ledger row, then continues the batch.
+Next time a similar vendor/part shows up, check_memory can approve it as APPROVED_BY_MEMORY without bothering the CFO again.
+Reset demo clears overrides, ledger rows, and saved runs so you can replay cleanly.
+9:04 PMdata scraper5. The agent — explained like a flowchart
+The agent is not a free-form chatbot. It’s a directed graph of steps with shared state (InvoiceState: id, vendor, part, amount, baseline, status, reason, anomaly flag).
+
+
+Step A — check_memory
+Ask Chroma: “Have we already learned a CFO rule for this vendor + part?”
+
+If yes → mark APPROVED_BY_MEMORY and skip hard thinking later.
+If no → continue empty-handed.
+
+Step B — audit_pricing
+Look up baseline cost in DuckDB from space_ledger_seed.csv.
+
+Amount ≤ baseline × 1.25 → APPROVED
+Amount > baseline × 1.25 → FLAGGED + anomaly_detected = true
+No history found → also treat as anomaly (don’t auto-approve unknowns)
+
+Step C — human_review (only if anomaly)
+Uses LangGraph’s interrupt(...). That pauses the run mid-graph and waits for a resume command from the API. This is the human-in-the-loop moment.
+
+Step D — commit_ledger
+Insert the final decision into DuckDB’s reconciled_ledger table (audit trail).
+Interview gold: “We used a state machine, not a single LLM prompt, so every branch is explicit, testable, and resumable.”
+9:04 PMdata scraper6. Data layer (beginner-friendly)
+DuckDB = “a database file, not a separate server”
+On startup, db.setup():
+
+Loads data/space_ledger_seed.csv into historical_space_procurement
+Ensures reconciled_ledger exists for final outcomes
+
+The seed CSV is real public data (Our World in Data LEO launch cost per kg): vehicle name, year, $/kg, vehicle class. In the demo UI, vendor ≈ launch vehicle, part ≈ class (Medium/Heavy/Small).
+
+ChromaDB = “memory that matches by meaning, not exact string”
+When the CFO writes a rule, we store:
+
+embedding key: "vendor part"
+metadata: the actual rule text
+
+Later lookups query by similarity (cosine distance). If close enough (distance < 0.3), reuse the rule. That’s why similar invoices can skip human review.
+
+LangGraph checkpointer (MemorySaver)
+Lets a paused invoice keep its place. Resume uses the same thread_id (= invoice_id). Reset clears these so demos can replay.
+9:04 PMdata scraper7. The API surface (backend/main.py)
+
+Endpoint
+What it does
+POST /login
+Issues a session token (demo auth)
+POST /logout
+Drops the token
+POST /process-invoice
+Runs the agent; may return requires_human: true
+POST /resolve-interrupt
+Saves CFO rule to Chroma, resumes the paused graph
+POST /reset-demo
+Clears overrides, ledger rows, checkpoints
+Also:
+
+CORS allows the GitHub Pages origin (https://etko18.github.io) plus localhost for local UI.
+Auth is intentionally simple (env vars AEROLEDGER_USER / AEROLEDGER_PASSWORD) — fine for a demo, not production SSO.
+
+When presenting, say: “Auth is demo-grade; the interesting design is the agent interrupt/resume contract.”
+9:04 PMdata scraper8. The frontend (“Mission Control”)
+Built with Next.js App Router, React, TypeScript, Tailwind.
+What it does:
+
+Keeps a queue of invoices (queued → running → cleared | halted | error)
+Runs them sequentially so a halt can stop the batch cleanly
+Shows baseline vs invoice amount, status badges, CFO interrupt panel
+Stores session token in sessionStorage
+Talks to the Render API (API_BASE)
+
+Hosting note: GitHub Pages serves a static export of the UI. It cannot run Python. That’s why Render exists.
+9:04 PMdata scraper9. How it’s deployed (what you actually shipped)
+
+Layer
+Where
+How
+Frontend
+GitHub Pages
+Static Next export on gh-pages → https://etko18.github.io/AeroLedger/
+Backend
+Render free web service
+uvicorn backend.main:app from render.yaml → https://aeroledger-api-36ir.onrender.com
+Repo
+GitHub etko18/AeroLedger
+Public
+Caveats to mention honestly in an interview:
+
+Free Render sleeps when idle; first request can be slow (~30–60s).
+DuckDB / Chroma on Render’s disk are ephemeral on free tier (fine for demo, not durable production storage).
+Demo auth is not enterprise security.
+9:04 PMdata scraper10. Suggested presentation outline (5–7 minutes)
+Hook: “Invoice audit that auto-clears normal spend and escalates anomalies.”
+Live demo: approve a few → halt on anomaly → CFO rule → memory reuse.
+Architecture slide: UI / API / agent / DuckDB / Chroma.
+Deep dive: LangGraph interrupt/resume + 1.25× threshold.
+Tradeoffs: static Pages + Render; free-tier sleep; demo auth.
+What’s next: real vendors, persistent DB, proper auth, stronger embeddings / evals.
+
+11. Likely interview questions (and short answers)
+Why LangGraph instead of one big prompt?
+Explicit control flow, pauses, and auditable states beat opaque “just ask the model.”
+Why interrupt instead of returning an error?
+Errors end the job. Interrupt preserves progress and resumes with human input.
+Why Chroma and DuckDB?
+DuckDB = structured historical numbers. Chroma = fuzzy recall of past human decisions. Different jobs.
+What breaks in production?
+In-memory sessions, ephemeral disk, free-tier cold starts, and the simplified vendor/part mapping.
+What’s the threshold logic?
+amount > baseline * 1.25 → anomaly. Tunable business rule, not ML magic.
+
+
+If you want, I can turn this into speaker notes, a one-page cheat sheet, or slide bullet text next.
+Ethan Ko, Sat 9:10 PM
+Going deeper this time — full beginner-to-interview deep dive, including every major code path and how you’d talk about it out loud.
+9:08 PMdata scraperAeroLedger — Complete Deep Dive
+(Beginner → interview / presentation ready. Read it like a study guide.)
+
+
+Part 0 — What you should be able to say in one breath
+
+“AeroLedger is a full-stack demo of autonomous invoice reconciliation with human-in-the-loop escalation. A Next.js Mission Control UI sends aerospace invoices to a FastAPI backend. A LangGraph agent compares each invoice to historical launch-cost baselines in DuckDB. Normal invoices auto-approve into a ledger. Suspicious ones pause the graph, ask a CFO for an override rule, store that rule in ChromaDB, resume, and remember it for next time.”
+
+
+That’s the headline. Everything below unpacks it.
+9:08 PMdata scraperPart 1 — The real-world story (why anyone would build this)
+Imagine a procurement office for a space company. Invoices arrive constantly:
+
+Vendor: who you’re paying (in the demo: often a launch vehicle name like Atlas V)
+Part / line item: what you’re buying (in the demo: often a vehicle class like Medium)
+Amount: how much they want
+
+Some invoices are fine. Some are way over historical norms. Some are for things you’ve never seen.
+Bad options:
+
+Approve everything → waste money / fraud risk
+Review everything manually → slow and expensive
+Pure ML black box → hard to audit, hard to trust in regulated industries
+
+AeroLedger’s pattern (what interviewers love):
+
+Encode business policy as an explicit workflow (not vibes)
+Automate confident cases
+Escalate ambiguous / anomalous cases to a human
+Persist the human decision so the system improves
+Keep an audit trail of final outcomes
+
+This is the same shape as fraud review, medical prior-auth, KYC escalation, content moderation queues, etc. Aerospace is the theme; the architecture is transferable.
+9:08 PMdata scraperPart 2 — What the product feels like (the demo narrative)
+Live UI: https://etko18.github.io/AeroLedger/
+API docs: https://aeroledger-api-36ir.onrender.com/docs
+Login: etko / password
+
+Screen layout
+Dark “mission control” aesthetic (grid background, monospace labels, sky/rose accents)
+Header: brand, cleared/held counters, sign-in or operator controls
+Left: Live Pipeline — queue of invoice cards + form to add more
+Right: Override Control — only meaningful when something is halted for CFO review
+
+Seeded demo invoices
+The UI ships with a fixed queue (vendor/part must generally exist in the seed CSV to price):
+
+
+Invoice
+Vendor
+Part
+Amount
+Typical outcome intuition
+INV-4471
+Falcon 9
+Medium
+$3,000
+Likely cheap vs historical → auto-approve
+INV-4472
+Atlas V
+Medium
+$9,000
+Near/above baseline depending on data → may flag
+INV-4473
+Soyuz
+Medium
+$20,000
+Often high → likely flag
+INV-4474
+AeroThruster Corp
+Hydrazine Thruster
+$450,000
+May not map cleanly to seed entities → anomaly path
+INV-4475
+Vega
+Small
+$22,000
+Depends on baseline
+Exact approve/flag depends on the latest seed cost for that Entity/class. The threshold rule is: flag if amount > baseline * 1.25.
+
+Click path for a presentation
+Sign in
+Click Process Batch
+Watch cards move QUEUED → ANALYZING… → APPROVED (or halt)
+When halted: right panel shows invoice vs baseline vs variance (e.g. 2.3× baseline)
+Type a CFO override rule → submit
+Batch resumes from the next invoice
+Optional: reset demo to wipe learned memory + ledger + paused runs
+Re-run to show APPROVED_BY_MEMORY when a similar vendor/part returns
+
+That’s your live demo script.
+9:08 PMdata scraperPart 3 — Repository map (what lives where)
+AeroLedger/
+├── data/
+│   └── space_ledger_seed.csv     # historical baselines (public launch-cost data)
+├── backend/
+│   ├── __init__.py               # makes `backend` an importable package
+│   ├── main.py                   # FastAPI HTTP API + auth + CORS
+│   ├── agent.py                  # LangGraph workflow (the “brain”)
+│   ├── db.py                     # DuckDB setup + baseline lookup + ledger writes
+│   └── memory.py                 # ChromaDB CFO override memory
+├── frontend/
+│   └── app/
+│       ├── layout.tsx            # page shell + fonts + metadata
+│       ├── globals.css           # theme, grid, alert animations
+│       └── page.tsx              # entire Mission Control UI (client component)
+├── render.yaml                   # Render Blueprint for the API
+└── requirements.txt              # Python deps
+
+Mental model:
+
+frontend = what humans see
+backend/main.py = door + security guard + receptionist
+backend/agent.py = decision factory floor
+backend/db.py = filing cabinets for numbers
+backend/memory.py = sticky notes of past CFO judgments
+data/*.csv = the textbook of historical prices
+9:08 PMdata scraperPart 4 — End-to-end architecture
+
+Why two hosts?
+GitHub Pages can only serve static files (HTML/JS/CSS). Perfect for the UI export.
+Render runs a long-lived Python process (uvicorn) that can keep DuckDB/Chroma and execute LangGraph.
+
+Frontend API_BASE points at https://aeroledger-api-36ir.onrender.com.
+
+CORS (why browsers care)
+Browsers block a page on etko18.github.io from calling *.onrender.com unless the API explicitly allows that origin. main.py reads FRONTEND_ORIGIN (comma-separated) and defaults to localhost + GitHub Pages origin.
+9:08 PMdata scraperPart 5 — The seed data (what “baseline” really means)
+File: data/space_ledger_seed.csv
+Source theme: Our World in Data–style cost of space launches to LEO ($ per kg of payload).
+Columns:
+
+Entity — launch vehicle name (Falcon 9, Atlas V, Soyuz, …)
+Year
+Launch cost per kilogram of payload
+Launch vehicle class — Small / Medium / Heavy
+
+How the demo maps invoices → this CSV
+In Mission Control:
+
+vendor_id ≈ Entity (vehicle)
+part_name ≈ Launch vehicle class (Small/Medium/Heavy)
+
+So an invoice like { vendor: "Atlas V", part: "Medium", amount: 9000 } means: “compare $9000 against the latest Atlas V Medium baseline cost-per-kg figure in the seed.”
+That’s a demo metaphor, not a literal accounting system. In a real company, baseline would be prior purchase orders, contracts, BOM costs, etc. Say that in interviews — it shows you know the difference between demo data and production data.
+
+DuckDB load
+On import/startup (db.setup()):
+
+Connect to local file backend/ledger.db
+CREATE OR REPLACE TABLE historical_space_procurement AS SELECT * FROM read_csv_auto(...)
+Ensure reconciled_ledger exists for final decisions
+
+DuckDB is embedded (like SQLite, but great at analytical/CSV workloads). No separate database server to manage for the demo.
+9:08 PMdata scraperPart 6 — The agent in extreme detail (backend/agent.py)
+6.1 Shared state
+Every node reads/writes pieces of InvoiceState:
+
+invoice_id, vendor_id, part_name, amount,
+baseline_cost, status, reason, anomaly_detected
+LangGraph merges each node’s returned dict into that state.
+
+6.2 Graph topology
+Nodes:
+
+check_memory
+audit_pricing
+human_review
+commit_ledger
+
+Edges:
+
+START → check_memory → audit_pricing
+From audit_pricing, conditional:
+if anomaly_detected → human_review
+else → commit_ledger
+
+human_review → commit_ledger → END
+
+Compiled with MemorySaver() checkpointer so paused runs can resume.
+
+6.3 Node: check_memory
+Calls lookup_override(vendor_id, part_name).
+
+Hit → set status APPROVED_BY_MEMORY, reason = stored rule, anomaly_detected=False
+Miss → return {} (no change)
+
+Important nuance: even after memory approval, the graph still flows into audit_pricing, but audit short-circuits if status is already APPROVED_BY_MEMORY.
+
+6.4 Node: audit_pricing
+Business rule engine:
+
+If already approved by memory → do nothing
+Else ask DuckDB for baseline
+If no baseline → anomaly (baseline_cost=0, reason explains missing history)
+If amount > baseline * 1.25 → FLAGGED, anomaly true, reason includes both numbers
+Else → APPROVED, anomaly false
+
+ANOMALY_THRESHOLD = 1.25 means 25% over baseline triggers human review.
+Interview phrasing: “The threshold is a tunable policy constant, deliberately simple and auditable.”
+
+6.5 Node: human_review + interrupts
+decision = interrupt("CFO override required")
+What interrupt means in plain English:
+
+Stop the graph here
+Persist progress via checkpointer (keyed by thread_id)
+Return control to the API caller with an interrupt payload
+Later, resume with Command(resume=...) carrying the human’s input
+
+After resume, node maps the decision into:
+
+APPROVED_BY_CFO or REJECTED
+plus a reason string
+
+6.6 Node: commit_ledger
+Inserts one row into reconciled_ledger with timestamp. This is your audit log of what the system finally decided.
+
+6.7 Why not “just call GPT”?
+You can say:
+
+Deterministic policy steps are cheap, testable, explainable
+Human pause points need a real workflow runtime
+LLMs can still help write override text or classify edge cases later — but the skeleton should be a graph
+
+AeroLedger currently uses rules + vector memory, not an LLM call in the hot path. That’s a feature for demos: fewer moving parts, no API key required.
+9:08 PMdata scraperPart 7 — Memory system deep dive (backend/memory.py)
+What is stored?
+Collection: cfo_override_rules
+On save (save_override):
+
+id: "{vendor}::{part}"
+document (embedded text): "{vendor} {part}" only
+metadata: { vendor_id, part_name, rule } where rule is the CFO’s natural-language decision
+Why embed only vendor+part, not the rule text?
+Comment in code says it clearly: if you embed the long rule, similarity gets diluted by wording length. Embedding the lookup key makes distance measure “is this the same kind of line item?”
+
+Lookup algorithm
+Embed query "vendor part"
+Ask Chroma for nearest neighbor (n_results=1)
+If distance ≥ 0.3 → treat as no match
+Else return metadata rule
+
+Distance space: cosine (hnsw:space: cosine).
+
+What “learning” means here
+Not model training. It’s case-based memory:
+
+Human decides once
+System stores the association
+Similar future invoices can short-circuit to auto-approve with APPROVED_BY_MEMORY
+
+Reset
+clear_overrides() deletes all IDs in the collection. Used by /reset-demo.
+
+Production caveats (say these unprompted)
+Free Render disk can be wiped on redeploy → memory not durable
+Similarity threshold 0.3 is heuristic
+Exact vendor string mismatches still matter a lot
+No user/tenant isolation in the collection
+9:08 PMdata scraperPart 8 — Database deep dive (backend/db.py)
+Two tables, two jobs
+1) historical_space_procurement
+
+Built from CSV every setup
+Read-only reference data for baselines
+
+2) reconciled_ledger
+
+Append-only style outcomes of processed invoices
+Columns: invoice_id, vendor_id, part_name, amount, status, timestamp
+
+Baseline lookup strategy (get_baseline_cost)
+Prefer exact match: Entity = vendor_id AND Launch vehicle class = part_name, latest Year
+Fallback: treat vendor or part alone as Entity, latest year
+If still nothing → raise ValueError (agent turns this into an anomaly)
+
+This layered lookup makes the demo more forgiving when the UI’s naming isn’t perfect — and is a good talking point about graceful degradation.
+
+Why DuckDB?
+Local file, zero ops
+Excellent CSV → table ergonomics (read_csv_auto)
+Fine for demo analytics / lookups
+Not a claim that you’d use DuckDB as your sole prod OLTP store forever (Postgres/etc. would be normal later)
+9:08 PMdata scraperPart 9 — API deep dive (backend/main.py)
+FastAPI app title: AeroLedger API. Served by Uvicorn on Render (PORT env).
+
+Auth model (demo-grade)
+Single username/password from env (AEROLEDGER_USER / AEROLEDGER_PASSWORD, defaults etko / password)
+/login compares with secrets.compare_digest (timing-safer than ==)
+Issues random URL-safe token into an in-memory _sessions set
+Protected routes depend on Authorization: Bearer <token>
+
+Interview honesty: “In-memory sessions die on process restart; this is for demo UX, not production identity.”
+
+POST /process-invoice
+Require session
+agent_app.invoke(invoice_dict, config={thread_id: invoice_id})
+Strip LangGraph internal keys (__interrupt__, etc.) for JSON safety
+Return:
+state: serializable agent state
+requires_human: true if interrupt message exists or anomaly flag is true
+interrupt_message: text from interrupt, if any
+
+
+Using invoice_id as thread_id is crucial: resume must target the same paused run.
+
+POST /resolve-interrupt
+Require session
+Confirm the thread is actually paused (get_state(...).next must be non-empty). Else 409 Conflict — prevents accidentally restarting a finished/non-paused thread and writing a useless memory entry.
+save_override(vendor, part, rule) into Chroma
+agent_app.invoke(Command(resume=rule), config=...)
+Return final state, requires_human=false
+
+POST /reset-demo
+Clears:
+
+Chroma overrides
+DuckDB reconciled rows
+LangGraph checkpoints (reset_checkpoints)
+
+Returns counts so the UI can show “Reset: X overrides, Y ledger rows, Z runs.”
+
+CORS
+Allows configured browser origins with credentials. Needed because UI and API are on different domains.
+9:09 PMdata scraperPart 10 — Frontend deep dive (frontend/app/page.tsx)
+It’s one big client component
+"use client" at top — browser React, not server-rendered business logic. Makes sense because almost everything is interactive session/batch state.
+
+Session handling
+Uses sessionStorage + useSyncExternalStore:
+
+Server snapshot always “signed out” (avoids hydration mismatches)
+Client reads token from storage
+Sign-out also best-effort calls /logout
+
+Batch runner design (important engineering detail)
+runBatch(startIndex) loops invoices sequentially.
+Why sequential?
+
+A halt must stop the world for CFO input
+Parallel approvals would race interrupts and confuse UX
+
+Uses rowsRef so invoices added mid-run can still be seen by the loop (avoids stale closure).
+Phases per row:
+
+queued → waiting
+running → API call in flight
+cleared → finished (approved/rejected/etc.)
+halted → needs CFO
+error → network/API failure
+
+When requires_human:
+
+mark row halted
+set interrupt panel state
+return (stop batch)
+after CFO submit, resume loop at interrupt.index + 1
+
+Override panel UX
+Shows invoice id, vendor, part, invoiced amount, baseline, and variance multiplier. Operator types free-text rule and submits to /resolve-interrupt.
+There’s also an <audio autoPlay src={${API_BASE}/alert-audio}> for alert sound. If that endpoint isn’t implemented on the API, the UI quietly sets audioFailed via onError — visual alert still works. (Good “I noticed a small gap” interview observation.)
+
+Adding custom invoices
+Form requires vendor, part, positive amount. Helper text tells users vendor/part should exist in the seed ledger.
+
+Visual language (globals.css)
+Dark navy background + subtle grid
+alert-pulse animation for halted cards
+sweep animation while analyzing
+Status color tones: emerald approve, rose reject/hold, amber flagged, sky running
+
+This isn’t fluff: the UI teaches the state machine.
+9:09 PMdata scraperPart 11 — Deployment story (what “production-ish” means here)
+Frontend → GitHub Pages
+Next configured with output: "export" for static hosting
+When building for Pages, GITHUB_PAGES=true sets basePath/assetPrefix to /AeroLedger
+Built frontend/out published on gh-pages branch
+Public URL: https://etko18.github.io/AeroLedger/
+
+Backend → Render
+render.yaml Blueprint:
+free Python web service aeroledger-api
+build: pip install -r requirements.txt
+start: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+health check: /docs
+env: PYTHON_VERSION, FRONTEND_ORIGIN
+
+Live URL: https://aeroledger-api-36ir.onrender.com
+
+Operational realities to mention
+Cold starts on free Render (sleep after idle)
+Ephemeral filesystem (DuckDB/Chroma may reset)
+Demo auth in memory
+Static UI can’t host the agent itself
+Repo is public so Pages + sharing are easy
+
+This section shows maturity: you understand tradeoffs, not just “it works on my laptop.”
+9:09 PMdata scraperPart 12 — Concrete example walkthrough (numbers)
+Suppose seed says latest Atlas V / Medium baseline cost is 8100.
+Invoice: { id: INV-4472, vendor: Atlas V, part: Medium, amount: 9000 }
+Compute: 9000 / 8100 ≈ 1.11 → under 1.25 → APPROVED
+Reason roughly: amount within baseline.
+Now invoice amount 20000 against baseline 8100:
+20000 / 8100 ≈ 2.47 → over 1.25 → FLAGGED → interrupt → CFO types rule → saved to Chroma → resume → commit_ledger.
+Later another Atlas V / Medium invoice arrives:
+
+check_memory finds nearby override
+status becomes APPROVED_BY_MEMORY
+audit skips heavy logic
+still commits to ledger
+
+That’s the learning loop in one story.
+9:09 PMdata scraperPart 13 — Design principles you can defend
+
+Explicit control flow over opaque generation
+Graph nodes are named business steps.
+
+
+Human-in-the-loop as a first-class primitive
+interrupt / Command(resume=...) not ad-hoc “please retry.”
+
+
+Separation of concerns
+
+structured history → DuckDB
+fuzzy prior decisions → Chroma
+workflow → LangGraph
+transport/auth → FastAPI
+experience → React
+
+
+Fail closed on unknowns
+Missing baseline ⇒ escalate, don’t silently approve.
+
+
+Demo resetability
+/reset-demo makes presentations repeatable.
+
+
+Honesty about demo boundaries
+Theme data ≠ production ERP integration.
+
+9:09 PMdata scraperPart 14 — Extended interview Q&A
+Q: Is this an AI agent?
+A: It’s an agentic workflow: stateful multi-step decisioning with tools/memory and human escalation. It does not currently call an LLM in the critical path; memory is vector similarity over past CFO rules.
+Q: Why LangGraph?
+A: Durable branching, interrupts, checkpointed threads, and clear node boundaries. Better than a pile of if-statements once human resume exists.
+Q: How do you prevent double-spend / replaying invoices?
+A: Thread id = invoice id + checkpoint memory. Reset clears threads for demos. Production would add idempotency keys and durable store constraints.
+Q: What happens if two CFOs act at once?
+A: Current demo is single-operator, in-memory sessions. Production needs authZ, locking around a paused thread, and audit of who approved.
+Q: How would you add an LLM?
+A: Optional node that drafts an override recommendation or explains variance in plain English — still keep thresholding + interrupt as source of truth.
+Q: How do you test this?
+A: Unit-test threshold routing; integration-test invoke→interrupt→resume; UI test batch halt/resume; golden tests with fixed CSV fixtures.
+Q: Biggest technical risk in the current deploy?
+A: Free-tier cold start + ephemeral disk + demo auth. Architecture is sound; durability/security need hardening.
+Q: Why Chroma distance 0.3?
+A: Tunable precision/recall knob. Too low → rarely reuse memory; too high → wrong rule applied. Would calibrate with labeled pairs.
+Q: What’s the data model smell?
+A: Using launch-vehicle $/kg as “invoice baseline” is metaphorical. Next step: real vendor/part master data and historical PO lines.
+9:09 PMdata scraperPart 15 — How to present this in 3 lengths
+60 seconds
+Problem → auto-approve vs escalate → LangGraph interrupt → DuckDB baselines → Chroma memory → live links.
+
+5 minutes
+Add architecture diagram, live demo of halt/resume, threshold math, deploy split (Pages + Render), tradeoffs.
+
+12–15 minutes (deep)
+Walk one invoice through every node with real numbers, show API responses conceptually, discuss production roadmap:
+
+Postgres + persistent object store
+Real IdP auth (Auth0/Cognito)
+Webhooks from ERP/NetSuite
+Eval harness for override memory quality
+Observability (structured logs, traces per invoice_id)
+Multi-tenant isolation
+
+
+Part 16 — Glossary (beginner friendly)
+
+Term
+Meaning here
+Invoice
+A payment request the system must approve/reject
+Baseline
+Historical reference cost from seed data
+Anomaly
+Amount too high vs baseline, or no baseline found
+Interrupt
+Pause agent mid-graph for human input
+Checkpoint
+Saved paused run state keyed by invoice id
+Override rule
+CFO’s text decision stored for reuse
+Ledger
+Table of final reconciled outcomes
+CORS
+Browser permission for cross-domain API calls
+Static export
+Prebuilt frontend files with no Node server
+
+If you want a follow-up, I can turn this into speaker notes with slide titles, a one-page cheat sheet, or a mock interview script where I ask and you answer.

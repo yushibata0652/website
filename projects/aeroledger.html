@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="AeroLedger — a HackMIT team project demonstrating aerospace invoice auditing with human review and decision memory."
+  >
+
+  <title>AeroLedger | Yuto Shibata</title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="project.css?v=2"
+  >
+</head>
+
+<body class="aeroledger-page">
+  <div class="page">
+
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+
+    <header class="nav-wrap">
+      <nav>
+        <a
+          class="crest home-transition"
+          href="../index.html"
+          aria-label="Home"
+        >
+          YS
+        </a>
+
+        <div class="case-label">
+          PROJECT CASE STUDY / AEROLEDGER
+        </div>
+
+        <a
+          class="back-link home-transition"
+          href="../index.html#projects"
+        >
+          ← Back to projects
+        </a>
+      </nav>
+    </header>
+
+
+    <main>
+      <section class="hero">
+        <div class="reveal-left">
+          <div class="kicker">HACKMIT · MIT HACKATHON · TEAM PROJECT</div>
+          <h1>AeroLedger</h1>
+          <p class="hero-copy">Our team built an aerospace invoice-auditing demo that
+            combines historical cost checks, human review, and memory of prior
+            decisions in a resumable workflow.</p>
+          <div class="meta">
+            <span>Next.js</span><span>React</span><span>TypeScript</span>
+            <span>FastAPI</span><span>LangGraph</span><span>DuckDB</span><span>ChromaDB</span>
+          </div>
+          <p class="hero-copy">
+            <a href="https://etko18.github.io/AeroLedger/" target="_blank" rel="noreferrer">View demo ↗</a>
+            · <a href="https://github.com/etko18/AeroLedger" target="_blank" rel="noreferrer">GitHub ↗</a>
+          </p>
+        </div>
+        <div class="project-visual reveal-right">
+          <div class="visual-card">
+            <div class="mini">INVOICE REVIEW WORKFLOW</div>
+            <h3>Audit. Review. Record.</h3>
+            <p>Compare an invoice with its historical baseline, pause for a human
+              decision when needed, and record the final outcome.</p>
+            <div class="model-comparison">
+              <div><strong>01 · Check memory</strong><p>Look for a prior vendor and part approval.</p></div>
+              <div><strong>02 · Audit pricing</strong><p>Flag missing history or costs more than 25% above baseline.</p></div>
+              <div><strong>03 · Resolve &amp; record</strong><p>Resume after human review and write the ledger entry.</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="heading reveal"><div class="idx">01 / OVERVIEW</div><h2>Invoice review with human oversight</h2></div>
+        <p class="prose reveal">Manual invoice checks take time, while automatic approval
+          can overlook unusual charges. AeroLedger demonstrates a workflow that clears
+          routine cases and brings exceptions to a human reviewer. We developed the
+          project as a team at HackMIT, MIT’s hackathon.</p>
+        <div class="context reveal"><b>A working prototype</b><p>The demo uses public
+          Our World in Data launch-cost data as a stand-in for procurement history.
+          Launch vehicles and vehicle classes represent vendors and parts; this is
+          a demonstration of the review workflow, rather than a production pricing model.</p></div>
+      </section>
+
+      <section class="section">
+        <div class="heading reveal"><div class="idx">02 / WORKFLOW</div><h2>From invoice to recorded decision</h2></div>
+        <div class="flow">
+          <div class="flow-box reveal"><b>Check &amp; compare</b><span>Look up prior approvals in ChromaDB. Otherwise, compare the amount with a historical baseline in DuckDB.</span></div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="flow-box reveal"><b>Pause &amp; review</b><span>Missing history or a price more than 25% above baseline pauses the LangGraph workflow for a CFO decision.</span></div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="flow-box reveal"><b>Resume &amp; record</b><span>Save the reviewer’s override, resume the paused invoice, and write the final outcome to the ledger.</span></div>
+        </div>
+      </section>
+
+      <section class="section light">
+        <div class="inner">
+          <div class="heading reveal"><div class="idx">03 / ARCHITECTURE</div><h2>Interface, workflow, and data</h2></div>
+          <div class="grid-2">
+            <article class="card reveal"><span>FRONTEND</span><h3>Next.js &amp; React</h3><p>A TypeScript interface displays the invoice queue, baseline comparisons, and human-review panel. Sequential batch processing stops when an invoice needs a decision and continues after review.</p></article>
+            <article class="card reveal"><span>API &amp; ORCHESTRATION</span><h3>FastAPI &amp; LangGraph</h3><p>The Python API processes invoices and resumes paused runs. Explicit graph steps and checkpoints preserve each invoice’s position while waiting for human input.</p></article>
+            <article class="card reveal"><span>STRUCTURED DATA</span><h3>DuckDB</h3><p>Historical launch-cost data supplies reference baselines. A separate reconciled ledger records processed invoices and final decisions for an audit trail.</p></article>
+            <article class="card reveal"><span>DECISION MEMORY</span><h3>ChromaDB</h3><p>Vector similarity over vendor and part names retrieves prior reviewer rules. Matching invoices can reuse an approval without repeating the review step.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="heading reveal"><div class="idx">04 / DESIGN DECISIONS</div><h2>Explicit rules and resumable review</h2></div>
+        <div class="grid-2">
+          <article class="card reveal"><span>DECISION LOGIC</span><h3>Transparent approval paths</h3><p>The core workflow uses deterministic pricing rules and vector memory, without an LLM call in the decision path. Each invoice moves through named steps with an explicit outcome.</p></article>
+          <article class="card reveal"><span>HUMAN INPUT</span><h3>Keep progress while paused</h3><p>LangGraph interrupts preserve a run until the reviewer responds. Resuming the same invoice connects the human decision to the original workflow and its ledger entry.</p></article>
+        </div>
+      </section>
+
+      <section class="section takeaway">
+        <div class="inner">
+          <div class="heading reveal"><div class="idx">05 / OUTCOME</div><h2>A complete demonstration of the review cycle</h2></div>
+          <div class="grid-3">
+            <article class="card reveal"><span>DEMO</span><h3>Approval through escalation</h3><p>The demo brings together batch processing, anomaly detection, human override, resumed execution, and reuse of previous decisions.</p></article>
+            <article class="card reveal"><span>DELIVERY</span><h3>Separate UI and API</h3><p>The frontend was published as a static Next.js export on GitHub Pages, with the Python API hosted separately on Render.</p></article>
+            <article class="card reveal"><span>NEXT STEPS</span><h3>Production readiness</h3><p>Further work would include real procurement data, durable storage, production authentication, and evaluation of memory matches before broader use.</p></article>
+          </div>
+        </div>
+      </section>
+      <section class="next">
+        <p>EXPLORE MORE</p><h2>More projects</h2>
+        <a class="home-transition" href="../index.html#projects">All projects <span>↗</span></a>
+      </section>
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer>
+      <span>© 2026 YUTO SHIBATA</span>
+      <span>AEROLEDGER CASE STUDY</span>
+
+      <a
+        class="home-transition"
+        href="../index.html"
+      >
+        HOME ↗
+      </a>
+    </footer>
+  </div>
+
+
+  <!-- Reverse soccer-ball transition -->
+  <div
+    id="transition-ball"
+    class="transition-ball"
+    aria-hidden="true"
+  >
+    ⚽
+  </div>
+
+
+  <script src="project.js?v=1"></script>
+</body>
+</html>
