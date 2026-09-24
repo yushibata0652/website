@@ -6,7 +6,7 @@
 .interest-number { font: 900 145px/.8 "DM Sans", sans-serif; color: var(--maize); opacity: .85; }
 .interest-label { font: 700 10px "DM Sans", sans-serif; letter-spacing: .16em; color: #6f6862; }
 .interest-stage h3 { font: 800 50px "DM Sans", sans-serif; margin: 10px 0; }
-.interest-copy { max-width: 650px; color: #6f6862; line-height: 1.75; font-size: 14px; }
+.interest-copy { max-width: 650px; color: var(--ink); line-height: 1.75; font-size: 14px; }
 .interest-stage.switching { animation: switchInterest .28s ease; }
 @keyframes switchInterest { 50% { opacity: .35; transform: translateY(5px); } }
 @media (max-width: 850px) {
